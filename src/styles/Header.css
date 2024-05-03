@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Katibeh&family=Kaushan+Script&display=swap');
+
+.navigation-menu{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    list-style: none;
+    
+  }
+  .navigation-menu li{
+    margin-left: 50px;   
+    
+  }
+  .navigation-menu li a{
+    text-decoration: none;
+    color: white; 
+  } 
+  .navigation-menu li a:hover{
+    color: goldenrod;
+  }
+  /* Mobile View */
+  .mobile-navigation{
+    list-style: none;
+  }
+  .mobile-navigation li{
+    margin-top: 20px;
+    
+  }
+  .mobile-navigation li a{
+    text-decoration: none;
+    font-size: 1.4ren;
+    
+    color: white;
+  }
+  .title {
+    font-family: "Kaushan Script", cursive;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+
+
+  
+/* This Style for The MObile View  */
+@media only screen and (max-width: 600px) {
+  .title {
+    font-family: "Kaushan Script", cursive;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+}   
+/* End Style for Mobile View */

@@ -1,0 +1,175 @@
+.firstList {
+  display: flex;
+  flex: 0.5;
+  background-color: #F4F5A6;
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none;
+}
+a{
+  text-decoration: none;
+}
+body{
+  background-image:url('../image/Blackbackground.jpg') ;
+}
+.firstList h2{
+  margin-left:50px ;
+}
+
+.sec{
+  display: flex
+  
+}
+
+.secondList{ 
+  display: flex;
+  text-align: center; 
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none;
+}
+.addsec,
+.secItems{
+  margin:60px;
+  margin-top: 30px;
+
+}
+.addsec img,
+.secItems img{
+  width: 200px;
+  height: 200px;
+  border-radius: 100px;
+}
+.secItems h3{
+  color: goldenrod;
+}
+.addthird,
+.thirdItems{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Three columns with equal width */
+  gap: 20px; /* Gap between grid items */
+  margin-left: 50px;
+  align-items: center;
+  text-align: center;
+  margin-top: 20px;
+}
+.addthird img,
+.thirdItems img{
+  width: 250px;
+  height: 250px;
+  border-radius: 50px;
+}
+.thirdItems h2,
+.thirdItems h4{
+  color: goldenrod;
+}
+
+.order{
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+.order .form{
+  margin: 10px;
+}
+.order .button{
+  font-size: 20px;
+  padding: 5px 10px;
+  border-radius: 50px;
+}
+
+.placeOrder{
+  display: flex;
+  margin-top: 50px;
+  margin-bottom: 10px;
+  justify-content: center;
+}
+.placeOrder button{
+  padding: 20px;
+  color: rgb(221, 215, 215);
+  background-color: rgb(236, 37, 37);
+  border-radius: 100px;
+  font-size: 25px;
+  
+}
+
+.orderDetails{
+margin-top: 10px;
+  width: auto;
+  height: 150px;
+  background-color: white;
+   display: none;
+  overflow:auto;
+}
+.orderDetails div p{
+  display: flex;
+  justify-content: space-between;
+}
+.orderDetails .orderHeader{
+  display: flex;
+  justify-content: space-between;
+}
+
+.borderedTable {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.borderedTable th, .borderedTable td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: left;
+}
+
+.borderedTable th {
+  background-color: #f2f2f2;
+}
+
+
+
+
+
+@media only screen and (max-width: 600px) {
+  .firstList h2{
+    margin-left:45px ;
+    font-size: 25px;
+  }
+  .secItems{
+    margin:30px;
+    margin-top: 30px;
+  
+  }
+
+  .secItems img{
+    width: 100px;
+    height: 100px;
+    border-radius: 80px;
+  }
+
+  .thirdItems{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Three columns with equal width */
+    gap: 20px; /* Gap between grid items */
+    margin-left: 10px;
+    align-items: center;
+    text-align: center;
+    margin-top: 30px;
+    
+  }
+  .thirdItems img{
+    width: 150px;
+    height: 150px;
+    border-radius: 50px;
+  }
+  .placeOrder button{
+  font-size: 20px;
+  padding: 10px;
+  border-radius: 50px;
+
+  }
+
+}
+
+
+
