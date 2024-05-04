@@ -1,12 +1,12 @@
 import Home from "./pages/Home/Home";
 import About from "./pages/About/About";
-import HomeAdmin from "./Admin/Home/HomeAdmin";
+import HomeAdmin from "./Users/Admin/Home/HomeAdmin";
 import Menu from "./pages/Menu/Menu";
 import PageNotFound from "./pages/Menu/PageNotFound";
-import Order from "./Admin/Orders/Order";
+import Order from "./Users/Admin/Orders/Order";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import MenuAdmin from "./Admin/Menu/MenuAdmin";
-import OrderDetails from "./pages/Menu/OrderDetails";
+import MenuAdmin from "./Users/Admin/Menu/MenuAdmin";
+
 function App() {
   return (
     <div>
@@ -18,7 +18,6 @@ function App() {
           <Route path="/Admin" element={<HomeAdmin/>}/>
           <Route path="/Orders" element={<Order/>}/>
           <Route path="/MenuAdmin" element={<MenuAdmin/>}/>
-          <Route path="/OrderDetails" element={<OrderDetails/>}/>
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>

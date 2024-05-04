@@ -10,7 +10,7 @@ a{
   text-decoration: none;
 }
 body{
-  background-image:url('../image/Blackbackground.jpg') ;
+  background-image:url('../constants/image/Blackbackground.jpg') ;
 }
 .firstList h2{
   margin-left:50px ;

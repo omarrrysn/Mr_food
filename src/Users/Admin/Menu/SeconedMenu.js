@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import ThirdMenu from "./ThirdMenu";
-import "../../styles/Menu.css";
+import "../../../styles/Menu.css";
 import axios from "axios";
-import { secondList, insertItems,images } from "../../constants/API";
+import { secondList, insertItems,images } from "../../../constants/API";
 const SecondMenu = ({ idd }) => {
   const [third, setThird] = useState("1");
   const [elements, setElements] = useState([]);
@@ -68,7 +68,7 @@ const SecondMenu = ({ idd }) => {
 
     <div className="sec">
     <div  className="addsec">
-                   <img src={require('../../image/addImage.png')} alt="loading" style={{cursor:"pointer"}}/>
+                   <img src={require('../../../constants/image/addImage.png')} alt="loading" style={{cursor:"pointer"}}/>
                   <div >
                   <form onSubmit={handleSubmit}>
             <label style={{color:"white"}}>Name:</label>

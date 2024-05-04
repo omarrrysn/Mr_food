@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import "../../styles/Menu.css";
+import "../../../styles/Menu.css";
 import axios from "axios";
-import { subItem , insertSubItems,images  } from "../../constants/API";
+import { subItem , insertSubItems,images  } from "../../../constants/API";
 
 const ThirdMenu = ({ data }) => {
   const [elements, setElements] = useState([]);

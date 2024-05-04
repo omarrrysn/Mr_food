@@ -1,5 +1,5 @@
 import React from 'react'
-import "../Accounts/accounts.css"
+import '../Accounts/accounts.css'
 
 
 const Accounts = () => {

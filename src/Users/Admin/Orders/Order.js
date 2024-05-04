@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import LayoutAdmin from '../../compounent/Admin/LayoutAdmin'; 
+import LayoutAdmin from '../../../compounent/Admin/LayoutAdmin'; 
 import axios from 'axios';
 
 

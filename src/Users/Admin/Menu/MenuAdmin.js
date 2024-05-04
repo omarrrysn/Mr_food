@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import LayoutAdmin from "../../compounent/Admin/LayoutAdmin";
+import LayoutAdmin from '../../../compounent/Admin/LayoutAdmin';
 import SecondMenu from "./SeconedMenu";
-import "../../styles/Menu.css";
+import "../../../styles/Menu.css";
 import axios from "axios";
 import { IconButton } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import { insertMainMenu,mainMenu } from "../../constants/API";
+import { insertMainMenu,mainMenu } from "../../../constants/API";
 function MenuAdmin() {
   const [sec, setSec] = useState("1");
   const [data, setData] = useState([]);

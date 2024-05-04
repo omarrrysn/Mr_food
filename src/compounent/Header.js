@@ -14,7 +14,7 @@ import FastfoodIcon from "@mui/icons-material/Fastfood";
 import { Link } from "react-router-dom";
 import images from "../constants/images";
 import "../styles/Header.css";
-import background from '../image/Blackbackground.jpg'
+
 const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
