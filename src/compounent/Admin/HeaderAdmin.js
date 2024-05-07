@@ -45,6 +45,9 @@ const HeaderAdmin = () => {
         <li>
           <Link to={"/Menu"}>Menu</Link>
         </li>
+        <li>
+                  <Link to={"/Menu"}>return</Link>
+         </li>
       </ul>
     </Box>
   );
@@ -69,16 +72,21 @@ const HeaderAdmin = () => {
             <Box sx={{ display: { xs: "none", sm: "block" } }}>
               <ul className="navigation-menu">
                 <li>
-                  <Link to={"/Admin"}>Home</Link>
+                  <Link to={"/Admin"}>Orders</Link>
                 </li>
                 <li>
-                  <Link to={"/Orders"}>Orders</Link>
+                  <Link to={"/"}>Home</Link>
                 </li>
+
+                <li>
+                  <Link to={"/Accounts"}>Accounts</Link>
+                </li>
+
                 <li>
                   <Link to={"/MenuAdmin"}>Menu</Link>
                 </li>
                 <li>
-                  <Link to={"/Menu"}>Contact us12121</Link>
+                  <Link to={"/Menu"}>return</Link>
                 </li>
               </ul>
             </Box>
@@ -86,7 +94,7 @@ const HeaderAdmin = () => {
               color="inherit"
               aria-label="open drawer"
               edge="start"
-              sx={{ mr: 2, display: { sm: "none" } }}
+              sx={{ mr: -5, display: { sm: "none" } }}
               onClick={HanlerDrawerTogglle}
             >
               <MenuIcon />

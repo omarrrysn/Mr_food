@@ -3,7 +3,6 @@ import LayoutAdmin from '../../../compounent/Admin/LayoutAdmin';
 import SecondMenu from "./SeconedMenu";
 import "../../../styles/Menu.css";
 import axios from "axios";
-import { IconButton } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { insertMainMenu,mainMenu } from "../../../constants/API";
 function MenuAdmin() {
@@ -11,7 +10,8 @@ function MenuAdmin() {
   const [data, setData] = useState([]);
   const [add,setAdd] = useState(false)
   const [name, setName] = useState('');
-
+  const [reload,setReload]=useState(true);
+ 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -79,7 +79,7 @@ function MenuAdmin() {
            
          />
 
-<button style={{background:"transparent", border:"none",cursor:"pointer"}} type="submit"><AddCircleOutlineIcon  onClick={() => setAdd(false)}/></button>
+<button style={{background:"transparent", border:"none",cursor:"pointer"}}onClick={() => setAdd(false)} type="submit"><AddCircleOutlineIcon /></button>
 
         
        </form>

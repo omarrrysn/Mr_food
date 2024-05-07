@@ -6,11 +6,12 @@ import PageNotFound from "./pages/Menu/PageNotFound";
 import Order from "./Users/Admin/Orders/Order";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MenuAdmin from "./Users/Admin/Menu/MenuAdmin";
-
+import Accounts from "./Users/Admin/Accounts/Accounts";
+import OrderDetails from './pages/Menu/OrderDetails';
 function App() {
   return (
     <div>
-      <BrowserRouter>
+      
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/About" element={<About />} />
@@ -18,9 +19,12 @@ function App() {
           <Route path="/Admin" element={<HomeAdmin/>}/>
           <Route path="/Orders" element={<Order/>}/>
           <Route path="/MenuAdmin" element={<MenuAdmin/>}/>
+          <Route path="/Accounts" element={<Accounts/>}/>
+          <Route path="/Orderr" element={<OrderDetails/>}/>
+
           <Route path="*" element={<PageNotFound />} />
         </Routes>
-      </BrowserRouter>
+      
     </div>
   );
 }

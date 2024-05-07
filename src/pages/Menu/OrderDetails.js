@@ -1,9 +1,12 @@
 import React from 'react'
-import CloseIcon from '@mui/icons-material/Close';
 
-function OrderDetails(id,name,quantity,price) {
+
+function OrderDetails(props) {
+ 
   return (
     <div   >
+
+      <h1 style={{color:"white"}}> </h1>
      {/* <div className="orderDetails" style={{display:"block"}}  >
 
 <div className="orderHeader">

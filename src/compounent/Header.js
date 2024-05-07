@@ -23,7 +23,7 @@ const Header = () => {
   };
   // Menu Drawer
   const drawer = (
-    <Box onClick={HanlerDrawerTogglle} sx={{ textAlign: "center" }}>
+    <Box onClick={HanlerDrawerTogglle} sx={{ textAlign: "center"}}>
       <Typography
         color={"goldenrod"}
         variant={"h6"}
@@ -89,14 +89,14 @@ const Header = () => {
               color="inherit"
               aria-label="open drawer"
               edge="start"
-              sx={{ mr: 2, display: { sm: "none" } }}
+              sx={{ mr: -5, display: { sm: "none" } }}
               onClick={HanlerDrawerTogglle}
             >
               <MenuIcon />
             </IconButton>
           </Toolbar>
         </AppBar>
-        <Box component="nav">
+        <Box component="nav" >
           <Drawer
             className="mfokho"
             variant="temporary"
@@ -112,7 +112,10 @@ const Header = () => {
               },
             }}
           >
+           
+
             {drawer}
+           
           </Drawer>
         </Box>
         <Box>

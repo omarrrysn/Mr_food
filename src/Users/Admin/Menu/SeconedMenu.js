@@ -2,14 +2,21 @@ import React, { useEffect, useState } from "react";
 import ThirdMenu from "./ThirdMenu";
 import "../../../styles/Menu.css";
 import axios from "axios";
-import { secondList, insertItems,images } from "../../../constants/API";
+import { secondList, insertItems,images,selectchef } from "../../../constants/API";
+import { CircularProgress } from '@mui/material';
+
 const SecondMenu = ({ idd }) => {
   const [third, setThird] = useState("1");
   const [elements, setElements] = useState([]);
   const id = idd;
   const [name, setName] = useState('');
   const [image, setImage] = useState(null);
-
+  const [chef ,setChef]= useState('');
+  const [data,setdata]=useState([]);
+  const [reload ,setReload]=useState(false);
+ const [dlt ,setDelete]=useState('');
+const [message,setMessage]=useState('');
+const [dltReload , setdltReload] = useState(false);
   const handleNameChange = (e) => {
       setName(e.target.value);
   };
@@ -20,7 +27,32 @@ const SecondMenu = ({ idd }) => {
       setImage(e.target.files[0]);
   };
 
+  const handelRoleChange=(e)=>{
+    setChef(e.target.value);
+  }
+
   
+  const handleDelete = () => {
+    axios.get(`https://transportationaqo.000webhostapp.com/php/DeleteItem.php?id=${dlt}`)
+      .then((response) => {
+        setMessage(response.data);
+        setdltReload(false);
+        console.log(message);
+      })
+      .catch(error => console.error('Error:', error));
+      axios
+      .get(`${secondList} ${id}`)
+      .then((response) => {
+        setElements(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching elements:", error);
+      });
+  };
+
+
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -28,12 +60,17 @@ const SecondMenu = ({ idd }) => {
     formData.append('id', idd);
     formData.append('name', name);
     formData.append('image', image);
+    formData.append('chef',chef);
+
 
     try {
         const response = await axios.post(insertItems, formData);
         console.log(response.data.message);
         setName('');
+        setChef('');
+        setReload(false);
         setImage(null);
+      
         // Refresh elements after successful insertion
         axios
           .get(`${secondList} ${id}`)
@@ -52,6 +89,16 @@ const SecondMenu = ({ idd }) => {
 
 
   useEffect(() => {
+
+    axios
+    .get(selectchef)
+    .then((response) => {
+      setdata(response.data);
+    })
+    .catch((error) => {
+      console.error("Error fetching users:", error);
+    });
+
     axios
       .get(
         ` ${secondList}  ${id}`
@@ -74,20 +121,42 @@ const SecondMenu = ({ idd }) => {
             <label style={{color:"white"}}>Name:</label>
             <input type="text" name="name"  value={name} onChange={handleNameChange} />
             <br />
-            <p style={{color:"white"}}>{name} {idd}</p>
+            <p style={{color:"white"}}>{idd}</p>
+            <br />
+            <label style={{color:"white"}}>chef:</label>
+            <select name="menuList" style={{width:"110px"}} value={chef} required onChange={handelRoleChange}>
+            <option  value="">Choose a chef</option>
+
+              {data.map((r)=>(
+                
+                  <option  value={r.id}>{r.name}</option>
+                  ))}
+                  </select>
+            <br />
+            
+
             <br />
             
             <label style={{color:"white"}}>Image:</label>
             <input type="file" onChange={handleImageChange} />
             <br />
-            <button type="submit">Upload</button>
+            <button type="submit" onClick={()=>setReload(true)} >Upload</button>
+            {reload && (
+    <div className="reload">
+<h2 >Loding...  
+<CircularProgress style={{marginLeft:"15px"}}  className="reload-icon" />
+
+</h2>
+    </div>
+
+  )}
         </form>
                     
                   </div>
                   
                 
                 </div>
-      <div className="secondList">
+      <div className="secondList ad2">
         {elements.map((item) => (
           <div className="secItems" key={item.id}>
             
@@ -112,6 +181,9 @@ const SecondMenu = ({ idd }) => {
               }}
             >
               {item.name} {item.id}
+              <br></br>
+              <br></br>
+              <button style={{padding:"8px" ,borderRadius:"10px"}} onClick={() => { setDelete(item.id); handleDelete();setdltReload(true) }} > Delete </button>
             </h3>
 
           
@@ -121,12 +193,17 @@ const SecondMenu = ({ idd }) => {
 
 
       </div>
-      <div className="updatesec">
-        <form>
-
-        </form>
-      </div>
+      
     </div>
+        {dlt && (
+<div className="reload">
+<h2 style={{marginLeft:"50%" }} >Deleting...  
+<CircularProgress style={{marginLeft:"15px"}}  className="reload-icon" />
+
+</h2>
+</div>
+
+)}
       {third && <ThirdMenu data={third} />}
     </div>
 

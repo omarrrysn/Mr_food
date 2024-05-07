@@ -4,15 +4,19 @@ import SecondMenu from "./SecondMenu";
 import "../../styles/Menu.css";
 import axios from "axios";
 import { mainMenu } from "../../constants/API";
+import { CircularProgress } from '@mui/material';
+
+
 function Menu() {
   const [sec, setSec] = useState(null);
   const [data, setData] = useState([]);
-
+const [reload,setReload]=useState(true);
   useEffect(() => {
       axios
-        .get(mainMenu)
-        .then((response) => {
-          setData(response.data);
+      .get(mainMenu)
+      .then((response) => {
+        setReload(false)
+        setData(response.data);
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
@@ -21,7 +25,18 @@ function Menu() {
 
   return (
     <Layout>
+
       <div style={{ height: 50 }}></div>
+   
+      {reload && (
+        <div className="reload">
+<h2 style={{marginLeft:"20px"}}>Loding...  
+<CircularProgress style={{marginLeft:"15px"}}  className="reload-icon" />
+
+</h2>
+        </div>
+
+      )}
       <div className="firstList">
         {data.map((item) => (
           <div key={item.id}>
@@ -37,6 +52,7 @@ function Menu() {
           </div>
         ))}
       </div>
+     
       {sec && <SecondMenu idd={sec.id} />}
     </Layout>
   );

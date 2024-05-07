@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "../../../styles/Menu.css";
 import axios from "axios";
-import { subItem , insertSubItems,images  } from "../../../constants/API";
+import { subItem , insertSubItems,images ,selectchef } from "../../../constants/API";
+import { CircularProgress } from '@mui/material';
+
 
 const ThirdMenu = ({ data }) => {
   const [elements, setElements] = useState([]);
@@ -9,6 +11,7 @@ const ThirdMenu = ({ data }) => {
   const [price,setPrice]=useState('');
   const [image,setImage]=useState(null);
   const id = data;
+  const [reload,setReload]=useState(false);
 
 
   const handleNameChange = (e) => {
@@ -36,6 +39,7 @@ const handleSubmit = async (e) => {
       console.log(response.data.message);
       setName('');
       setImage(null);
+      setReload(false);
       setPrice('');
       // Refresh elements after successful insertion
       axios
@@ -55,6 +59,8 @@ const handleSubmit = async (e) => {
 
 
 useEffect(() => {
+
+
   axios
     .get(
   ` ${subItem} ${id}`
@@ -100,7 +106,16 @@ useEffect(() => {
             <label style={{color:"white"}}>Image:</label>
             <input type="file"  accept="image/*" onChange={handleImageChange}/>
             <br />
-            <button type="submit">Upload</button>
+            <button type="submit" onClick={()=>setReload(true)} >Upload</button>
+            {reload && (
+        <div className="reload">
+<h2 >Loding...  
+<CircularProgress style={{marginLeft:"15px"}}  className="reload-icon" />
+
+</h2>
+        </div>
+
+      )}
         </form>
                     
                   </div>
