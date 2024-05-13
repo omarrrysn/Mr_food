@@ -3,7 +3,7 @@ import ThirdMenu from "./ThirdMenu";
 import "../../styles/Menu.css";
 import axios from "axios";
 import { secondList , images } from "../../constants/API";
-const SecondMenu = ({ idd }) => {
+const SecondMenu = ({ idd , tableid ,time , date}) => {
   const [third, setThird] = useState(null);
   const [elements, setElements] = useState([]);
   const id = idd;
@@ -50,7 +50,7 @@ const SecondMenu = ({ idd }) => {
           </div>
         ))}
       </div>
-      {third && <ThirdMenu data={third.id} />}
+      {third && <ThirdMenu data={third.id} tbl={tableid} tm={time} dt={date}/>}
     </div>
   );
 };

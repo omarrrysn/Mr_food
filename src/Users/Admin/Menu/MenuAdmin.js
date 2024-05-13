@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import LayoutAdmin from '../../../compounent/Admin/LayoutAdmin';
-import SecondMenu from "./SeconedMenu";
+import SecondMenu from "./SecondMenu";
 import "../../../styles/Menu.css";
 import axios from "axios";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { insertMainMenu,mainMenu } from "../../../constants/API";
 function MenuAdmin() {
-  const [sec, setSec] = useState("1");
+  const [sec, setSec] = useState();
   const [data, setData] = useState([]);
   const [add,setAdd] = useState(false)
   const [name, setName] = useState('');
@@ -76,10 +76,10 @@ function MenuAdmin() {
            placeholder="Enter a list"
            value={name}
            onChange={(e) => setName(e.target.value)}
-           
+           required
          />
 
-<button style={{background:"transparent", border:"none",cursor:"pointer"}}onClick={() => setAdd(false)} type="submit"><AddCircleOutlineIcon /></button>
+<button style={{background:"transparent", border:"none",cursor:"pointer"}} type="submit"><AddCircleOutlineIcon /></button>
 
         
        </form>

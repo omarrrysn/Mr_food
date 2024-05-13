@@ -101,7 +101,7 @@ body{
 .orderDetails{
 margin-top: 10px;
   width: auto;
-  height: 150px;
+  height: 100%;
   background-color: white;
    display: none;
   overflow:auto;

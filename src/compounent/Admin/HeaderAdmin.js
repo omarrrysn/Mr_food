@@ -75,7 +75,7 @@ const HeaderAdmin = () => {
                   <Link to={"/Admin"}>Orders</Link>
                 </li>
                 <li>
-                  <Link to={"/"}>Home</Link>
+                  <Link to={"/tables"}>Tables</Link>
                 </li>
 
                 <li>
@@ -86,7 +86,7 @@ const HeaderAdmin = () => {
                   <Link to={"/MenuAdmin"}>Menu</Link>
                 </li>
                 <li>
-                  <Link to={"/Menu"}>return</Link>
+                  <Link to={"/"}>Return</Link>
                 </li>
               </ul>
             </Box>

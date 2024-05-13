@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../../../styles/Menu.css";
 import axios from "axios";
-import { subItem , insertSubItems,images ,selectchef } from "../../../constants/API";
+import { subItem , insertSubItems,images ,deleteThird } from "../../../constants/API";
 import { CircularProgress } from '@mui/material';
 
 
@@ -12,6 +12,10 @@ const ThirdMenu = ({ data }) => {
   const [image,setImage]=useState(null);
   const id = data;
   const [reload,setReload]=useState(false);
+  const [message,setMessage]=useState('');
+const [dltReload , setdltReload] = useState(false);
+ const [dlt ,setDelete]=useState('');
+  
 
 
   const handleNameChange = (e) => {
@@ -41,7 +45,6 @@ const handleSubmit = async (e) => {
       setImage(null);
       setReload(false);
       setPrice('');
-      // Refresh elements after successful insertion
       axios
         .get(  ` ${subItem} ${id}`        )
         .then((response) => {
@@ -55,7 +58,23 @@ const handleSubmit = async (e) => {
   }
 };
 
-
+const handleDelete = () => {
+  axios.get(`${deleteThird}${dlt}`)
+    .then((response) => {
+      setMessage(response.data);
+      setdltReload(false);
+      console.log(message);
+    })
+    .catch(error => console.error('Error:', error));
+    axios
+    .get(`${subItem} ${id}`)
+    .then((response) => {
+      setElements(response.data);
+    })
+    .catch((error) => {
+      console.error("Error fetching elements:", error);
+    });
+};
 
 
 useEffect(() => {
@@ -92,19 +111,19 @@ useEffect(() => {
                   <div >
                   <form onSubmit={handleSubmit}>
             <label style={{color:"white"}}>Name:</label>
-            <input type="text" name="name"  value={name} onChange={handleNameChange} />
+            <input required  type="text" name="name"  value={name} onChange={handleNameChange} />
             <br />
             <br />
 
             <label style={{color:"white"}}>Price:</label>
-            <input type="text" name="price"  value={price} onChange={handlePriceChange} />
+            <input required  type="number" name="price"  value={price} onChange={handlePriceChange} />
             <br />
 
             <p style={{color:"white"}}>{name} {id}</p>
             <br />
             
             <label style={{color:"white"}}>Image:</label>
-            <input type="file"  accept="image/*" onChange={handleImageChange}/>
+            <input required  type="file"  accept="image/*" onChange={handleImageChange}/>
             <br />
             <button type="submit" onClick={()=>setReload(true)} >Upload</button>
             {reload && (
@@ -135,10 +154,23 @@ useEffect(() => {
             <h4>{subItem.Name} id: {subItem.id}</h4>
             <h4>{subItem.price}$</h4>
 
+            <button style={{padding:"8px" ,borderRadius:"10px"}} onClick={() => { setDelete(subItem.id); handleDelete();setdltReload(true) }} > Delete </button>
             
           </div>
         ))}
       </div>
+
+      {dltReload && (
+<div className="reload">
+<h2 style={{marginLeft:"50%" }} >Deleting...  
+<CircularProgress style={{marginLeft:"15px"}}  className="reload-icon" />
+
+</h2>
+</div>
+
+)}
+
+
       <div style={{height:"50px"}}></div>
     </div>
   );

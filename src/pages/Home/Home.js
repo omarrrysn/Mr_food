@@ -4,7 +4,9 @@ import "../../styles/Home.css";
 import BackgroundImage1 from "../../constants/images";
 
 import Circle from "../../constants/image/Circlefood.png";
+import { useLocation } from "react-router-dom";
 const Home = () => {
+ 
   return (
     <Layout>
       <div
@@ -13,6 +15,7 @@ const Home = () => {
       >
         <div className="headerContainer">
           <div className="textWelcome">
+           
             <h1>ENJOY  OUR  </h1>
             <h1>DELICIOUS MEALS</h1> 
             <p>Taste the passion in every dish & </p> 

@@ -4,11 +4,11 @@ import Layout from "../../compounent/layout/layout";
 
 const PageNotFound = () => {
   return (
-    <Layout>
-      <h1>
+  
+      <h1 style={{color:"white" ,display:"flex" ,justifyContent:"center",textAlign:"center",padding:"50px"}}>
         PageNotFound
         </h1> 
-      </Layout>
+
   )
 }
 export default PageNotFound;

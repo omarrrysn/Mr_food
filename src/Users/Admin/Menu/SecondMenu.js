@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import ThirdMenu from "./ThirdMenu";
 import "../../../styles/Menu.css";
 import axios from "axios";
-import { secondList, insertItems,images,selectchef } from "../../../constants/API";
+import { secondList, insertItems,images,selectchef , deleteSecond} from "../../../constants/API";
 import { CircularProgress } from '@mui/material';
 
 const SecondMenu = ({ idd }) => {
@@ -15,8 +15,10 @@ const SecondMenu = ({ idd }) => {
   const [data,setdata]=useState([]);
   const [reload ,setReload]=useState(false);
  const [dlt ,setDelete]=useState('');
+ const [edit,setEdit]=useState(false);
 const [message,setMessage]=useState('');
 const [dltReload , setdltReload] = useState(false);
+const [editItem, setEditItem] = useState(null);
   const handleNameChange = (e) => {
       setName(e.target.value);
   };
@@ -33,7 +35,7 @@ const [dltReload , setdltReload] = useState(false);
 
   
   const handleDelete = () => {
-    axios.get(`https://transportationaqo.000webhostapp.com/php/DeleteItem.php?id=${dlt}`)
+    axios.get(`${deleteSecond}${dlt}`)
       .then((response) => {
         setMessage(response.data);
         setdltReload(false);
@@ -119,17 +121,17 @@ const [dltReload , setdltReload] = useState(false);
                   <div >
                   <form onSubmit={handleSubmit}>
             <label style={{color:"white"}}>Name:</label>
-            <input type="text" name="name"  value={name} onChange={handleNameChange} />
+            <input type="text" name="name"  value={name} onChange={handleNameChange}  required/>
             <br />
             <p style={{color:"white"}}>{idd}</p>
             <br />
             <label style={{color:"white"}}>chef:</label>
-            <select name="menuList" style={{width:"110px"}} value={chef} required onChange={handelRoleChange}>
-            <option  value="">Choose a chef</option>
+            <select  name="menuList" required  style={{width:"110px"}} value={chef}  onChange={handelRoleChange}>
+            <option   value="">Choose a chef</option>
 
               {data.map((r)=>(
                 
-                  <option  value={r.id}>{r.name}</option>
+                  <option   value={r.id}>{r.name}</option>
                   ))}
                   </select>
             <br />
@@ -138,7 +140,7 @@ const [dltReload , setdltReload] = useState(false);
             <br />
             
             <label style={{color:"white"}}>Image:</label>
-            <input type="file" onChange={handleImageChange} />
+            <input required  type="file"accept="image/*"   onChange={handleImageChange} />
             <br />
             <button type="submit" onClick={()=>setReload(true)} >Upload</button>
             {reload && (
@@ -183,8 +185,43 @@ const [dltReload , setdltReload] = useState(false);
               {item.name} {item.id}
               <br></br>
               <br></br>
-              <button style={{padding:"8px" ,borderRadius:"10px"}} onClick={() => { setDelete(item.id); handleDelete();setdltReload(true) }} > Delete </button>
+              <button style={{padding:"8px" ,borderRadius:"10px"}} 
+              onClick={() => { setDelete(item.id); handleDelete();setdltReload(true) }} > Delete </button>
+              <br></br>
+              <br></br>
+              {/* <button
+        style={{ padding: "8px", borderRadius: "10px" }}
+        onClick={() => { setEditItem(item); setEdit(true); }}
+      >
+        Edit
+      </button> */}
             </h3>
+            {/* {edit && editItem.id === item.id && (
+      <form onSubmit={(e) => {
+          e.preventDefault();
+          
+          }}>
+              <br></br>
+        <br></br>
+        <input
+          type="text"
+          value={editItem.name}
+          onChange={(e) => setEditItem({ ...editItem, name: e.target.value })}
+        />
+        
+          <br></br>
+        <br></br>
+        <input
+          type="file"
+          onChange={(e) => setEditItem({ ...editItem, image: e.target.files[0] })}
+        />
+       
+        <br></br>
+        <br></br>
+        <button type="submit"   >Save</button>
+      </form>
+    )} */}
+
 
           
 
@@ -195,7 +232,7 @@ const [dltReload , setdltReload] = useState(false);
       </div>
       
     </div>
-        {dlt && (
+        {dltReload && (
 <div className="reload">
 <h2 style={{marginLeft:"50%" }} >Deleting...  
 <CircularProgress style={{marginLeft:"15px"}}  className="reload-icon" />

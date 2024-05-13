@@ -49,7 +49,6 @@ const handleSubmit = async (e) => {
       setEmail('');
       setpassword('');
       
-      // Refresh elements after successful insertion
       axios
       .get(selectedUsers)
       .then((response) => {
@@ -100,7 +99,7 @@ const handleSubmit = async (e) => {
             <input type="text" required name="name" value={name} onChange={handleNameChange}  />
             <br /> <br></br>
       <label >Eamil:</label>
-            <input type="text" required name="email"  value={email} onChange={handelEmailChange}  />
+            <input type="email" required name="email"  value={email} onChange={handelEmailChange}  />
             <br /> <br></br>
       <label >Password:</label>
             <input type="text" name="password" value={password} required onChange={handelPasswordChange}  />

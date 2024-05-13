@@ -46,7 +46,7 @@ const Header = () => {
           <Link to={"/Menu"}>Menu</Link>
         </li>
         <li>
-                  <Link to={"/Admin"}>Admin</Link>
+                  <Link to={"/Orders"}>Admin</Link>
                 </li>
       </ul>
     </Box>
