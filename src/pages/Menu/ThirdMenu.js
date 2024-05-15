@@ -3,8 +3,8 @@ import "../../styles/Menu.css";
 import axios from "axios";
 import CloseIcon from '@mui/icons-material/Close';
 import { subItem , images ,insertOrderDetails ,insertMainOrder, selectOrderId, updateTotaleprice} from "../../constants/API";
-
 import { Box, Divider, Drawer, Typography } from "@mui/material";
+import { CircularProgress } from '@mui/material';
 
 
 
@@ -25,7 +25,7 @@ const ThirdMenu = ({ data,tbl,tm,dt }) => {
   const [date, setDate] = useState(`${dt}`);
   const [mainorder,setMainOrder]=useState(0);
   const tblId=tbl;
-
+  const [orderLoading,setOrderLoading]=useState(false);
  
 
   
@@ -78,7 +78,7 @@ const ThirdMenu = ({ data,tbl,tm,dt }) => {
   const selectedprices = Object.keys(order).filter((id) => order[id] > 0).map((id) => price[id]);
   const selectedIds = Object.keys(order).filter((item) => order[item] > 0);
   const selectedQuantities = Object.values(order).filter((quantity) => quantity > 0);
-  const totalPrice = selectedIds.reduce((acc, _, index) => acc + (selectedprices[index] * selectedQuantities[index]), 0).toFixed(2);
+  const totalPrice = selectedIds.reduce((acc, _, index) => acc + (selectedprices[index] * selectedQuantities[index]), 0);
   const handler = () =>{
     setOpen(true); 
     setMainOrder(mainorder + 1);
@@ -110,7 +110,7 @@ if(mainorder+1==1){
 
 
   const handleInsert = () => {
-  
+      setOrderLoading(true);
       const formData = new FormData();
       formData.append('tableid', tblId);
       formData.append('time', hours);
@@ -122,7 +122,7 @@ if(mainorder+1==1){
         id: Id,
         chef: chef[Id],
         quantity: order[Id],
-        price: parseFloat((price[Id] * order[Id]).toFixed(2)),
+        price: price[Id] * order[Id],
         notes: notes[Id] || '',
       }));
   
@@ -136,11 +136,13 @@ if(mainorder+1==1){
       })
       .then(response => {
         console.log('success', response.data.message);
+        alert("Order succesfully added");
         setChef([]);
         setOrder([]);
         setPrice([]);
         setNotes([]);
         setOpen(false);
+        setOrderLoading(false);
         axios.post(updateTotaleprice, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -215,7 +217,12 @@ if(mainorder+1==1){
         >
           <Box sx={{ textAlign: "center" }}>
             <Typography color={"goldenrod"} variant={"h6"} component={"div"} sx={{ flexGrow: 1.5 }}>
-              Order Details
+              Order Details: {orderLoading && (
+                <div>
+                  Loading... <CircularProgress style={{marginLeft:"15px"}}  className="reload-icon" />
+
+                </div>
+              )}
             </Typography>
             <Divider />
                 

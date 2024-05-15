@@ -5,14 +5,11 @@ import "../../styles/Menu.css";
 import axios from "axios";
 import { mainMenu } from "../../constants/API";
 import { CircularProgress } from '@mui/material';
-import { useLocation } from "react-router-dom";
-import { Check } from "@mui/icons-material";
 import PageNotFound from './PageNotFound';
 
 function Menu() {
-  const location=useLocation();
-  const {tableId} = location.state || {};
-  const tbl=tableId || 0;
+  const storedTableId = localStorage.getItem('tableId');
+  const [tableId1, setTableId] = useState(storedTableId || 0);
   const [sec, setSec] = useState(null);
   const [data, setData] = useState([]);
 const [reload,setReload]=useState(true);
@@ -24,13 +21,15 @@ const d=date;
 
 
 const handlecheck=()=>{ 
-  if (tbl==0){
+  if (tableId1==0){
     setCheck(false);
   }
   else{
     setCheck(true);
   }
 }
+
+
 const handleTimeDate = () => {
   
   const hour = (new Date().getHours() % 12) || 12;
@@ -91,12 +90,12 @@ sethours(tm);
         </div>
       ))}
     </div>
-    {sec && <SecondMenu idd={sec.id} tableid={tbl} time={h} date={d} />}
+    
+    {sec && <SecondMenu idd={sec.id} tableid={tableId1} time={h} date={d} />}
   </Layout>
 ) : (
   <PageNotFound />
 )}
-
 
 
     

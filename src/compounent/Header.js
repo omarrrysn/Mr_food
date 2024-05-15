@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AppBar,
   Box,
@@ -11,13 +11,17 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import {} from "@mui/icons-material";
 import FastfoodIcon from "@mui/icons-material/Fastfood";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import images from "../constants/images";
 import "../styles/Header.css";
 
 const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
-
+  const location=useLocation();
+  const {tableId} = location.state || {};
+  const tbl=tableId || 0;
+  const [id,setId]=useState(0);
+ 
   const HanlerDrawerTogglle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -37,7 +41,7 @@ const Header = () => {
 
       <ul className="mobile-navigation">
         <li>
-          <Link to={"/"}>Home</Link>
+          <Link to={"/Home"}>Home</Link>
         </li>
         <li>
           <Link to={"/About"}>About</Link>
@@ -46,11 +50,18 @@ const Header = () => {
           <Link to={"/Menu"}>Menu</Link>
         </li>
         <li>
-                  <Link to={"/Orders"}>Admin</Link>
+                  <Link to={"/"}>logout</Link>
                 </li>
       </ul>
     </Box>
   );
+ useEffect(() => {
+  setId(tbl);
+
+}
+ 
+ 
+ )
   return (
     <>
       <Box>
@@ -72,7 +83,7 @@ const Header = () => {
             <Box sx={{ display: { xs: "none", sm: "block" } }}>
               <ul className="navigation-menu">
                 <li>
-                  <Link to={"/"}>Home</Link>
+                  <Link to={"/Home"}>Home</Link>
                 </li>
                 <li>
                   <Link to={"/About"}>About</Link>
@@ -81,7 +92,7 @@ const Header = () => {
                   <Link to={"/Menu"}>Menu</Link>
                 </li>
                 <li>
-                  <Link to={"/Admin"}>Admin</Link>
+                  <Link  to={"/"}>Logout</Link>
                 </li>
               </ul>
             </Box>

@@ -17,7 +17,8 @@ const Home = () => {
           <div className="textWelcome">
            
             <h1>ENJOY  OUR  </h1>
-            <h1>DELICIOUS MEALS</h1> 
+            <h1>DELICIOUS MEALS</h1>
+            <br></br> 
             <p>Taste the passion in every dish & </p> 
             <p>savor the moment with every bite</p>
           </div>

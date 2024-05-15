@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Casher.css';
 import axios from 'axios';
+import { OrderCasher, updateStatus } from '../../constants/API';
 
 
 function Casher() {
@@ -8,8 +9,6 @@ function Casher() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-
   
 
   useEffect(() => {
@@ -37,7 +36,7 @@ function Casher() {
   
     const fetchOrders = async () => {
       try {
-        const response = await axios.get('https://mrfooda7a.000webhostapp.com/php/OrderCasher.php');
+        const response = await axios.get(OrderCasher);
   
         if (isMounted) {
           // console.log('Response data:', response.data);
@@ -101,7 +100,7 @@ function Casher() {
   
   const handleRecordedChange = async (orderId) => {
     try {
-      await axios.post('https://mrfooda7a.000webhostapp.com/php/updateStatus.php', [
+      await axios.post(updateStatus, [
         { OrderId: orderId, recorded: 'Recorded' }
       ]);
       const updatedOrders = orders.map(order => {

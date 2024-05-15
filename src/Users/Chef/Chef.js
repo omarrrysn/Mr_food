@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import "./Chef.css";
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
-
+import { chefOrder, updateOrderStatusChef } from '../../constants/API';
 function Chef() {
   const location = useLocation();
   const { id, name } = location.state;
@@ -14,7 +14,7 @@ function Chef() {
     const fetchOrders = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get(`https://mrfooda7a.000webhostapp.com/php/Order.php?chefId=${id}`);
+        const response = await axios.get(`${chefOrder}${id}`);
         if (!response.data || response.data.error) {
           throw new Error('Failed to fetch orders');
         }
@@ -64,7 +64,7 @@ function Chef() {
 
   const handleCookingStatusChange = async (orderId) => {
     try {
-      await axios.post('https://mrfooda7a.000webhostapp.com/php/updateOrderStatusChef.php', [
+      await axios.post( updateOrderStatusChef, [
         { OrderId: orderId, status: 'Cooking' }
       ]);
       const updatedOrders = orders.map(order => {
@@ -83,7 +83,7 @@ function Chef() {
   
   const handleReadyStatusChange = async (orderId) => {
     try {
-      await axios.post('https://mrfooda7a.000webhostapp.com/php/updateOrderStatusChef.php', [
+      await axios.post(updateOrderStatusChef, [
         { OrderId: orderId, status: 'Ready' }
       ]);
       const updatedOrders = orders.map(order => {
@@ -100,7 +100,7 @@ function Chef() {
   
   const handleTakenStatusChange = async (orderId) => {
     try {
-      await axios.post('https://mrfooda7a.000webhostapp.com/php/updateOrderStatusChef.php', [
+      await axios.post(updateOrderStatusChef, [
         { OrderId: orderId, status: 'Taken' }
       ]);
       const updatedOrders = orders.map(order => {

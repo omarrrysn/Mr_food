@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import "./Login.css";
 import { LoginTables } from '../../constants/API';
 import axios from 'axios';
+import { CircularProgress } from '@mui/material';
+
 const Login = () => {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-
+  const [loading, setLoading]=useState(false);
   const handleEmailChange = (e) => {
     setName(e.target.value);
   };
@@ -18,9 +20,13 @@ const Login = () => {
   };
 
   const handleOpen = ()=>{
-    navigate(`/About`);
+    navigate(`/LoginUsers`);
+  }
+  const handletest = ()=>{
+    navigate(`/Menu`);
   }
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
     const formData = new FormData();
     formData.append('name', name);
@@ -32,8 +38,11 @@ const Login = () => {
 
       if (response.data.success) {
         const tableId = response.data.tableId;
+        setLoading(false);
         console.log('Login successful');
-        navigate(`/Menu`, { state: {tableId} });
+
+        localStorage.setItem('tableId', tableId);
+        navigate(`/Menu`);
 
       } else {
         setError('Invalid credentials');
@@ -43,6 +52,12 @@ const Login = () => {
       console.error(error);
     }
   };
+  useEffect(() => {
+    localStorage.removeItem('tableId');
+  }, []);
+
+
+
   return (
     <div className="login-container">
       <h2 className="login-heading">Login</h2>
@@ -70,10 +85,22 @@ const Login = () => {
           />
         </div>
         <button type="submit" className="login-btn">Login</button>
+        <br></br>
         {error && <p className="error">{error}</p>}
       </form>
+        <button className="login-btn"  onClick={handleOpen} >Login Users</button>
+        <button className="login-btn"  onClick={handletest} >Menu</button>
+        <br></br>
+        {loading && (
+      <div className="reload">
+        <h2 style={{ marginLeft: "20px" }}>
+          Loading...
+          <CircularProgress style={{ marginLeft: "15px" }} className="reload-icon" />
+        </h2>
+      </div>
+    )}
     </div>
   );
 };
 
-export default Login;
+export default Login;

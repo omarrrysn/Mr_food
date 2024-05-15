@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./Login.css"
-const Login = () => {
+import { LoginUser } from '../../constants/API';
+const LoginUsers = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -19,7 +20,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('https://mrfooda7a.000webhostapp.com/php/Login.php', {
+      const response = await fetch( LoginUser, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -97,4 +98,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginUsers;

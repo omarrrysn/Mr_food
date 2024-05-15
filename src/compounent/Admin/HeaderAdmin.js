@@ -35,20 +35,25 @@ const HeaderAdmin = () => {
       </Typography>
       <Divider />
 
-      <ul className="mobile-navigation">
-        <li>
-          <Link to={"/"}>Home</Link>
-        </li>
-        <li>
-          <Link to={"/About"}>About</Link>
-        </li>
-        <li>
-          <Link to={"/Menu"}>Menu</Link>
-        </li>
-        <li>
-                  <Link to={"/Menu"}>return</Link>
-         </li>
-      </ul>
+      <ul className="navigation-menu">
+                <li>
+                  <Link to={"/Admin"}>Orders</Link>
+                </li>
+                <li>
+                  <Link to={"/tables"}>Tables</Link>
+                </li>
+
+                <li>
+                  <Link to={"/Accounts"}>Accounts</Link>
+                </li>
+
+                <li>
+                  <Link to={"/MenuAdmin"}>Menu</Link>
+                </li>
+                <li>
+                  <Link to={"/"}>logout</Link>
+                </li>
+              </ul>
     </Box>
   );
   return (
@@ -86,7 +91,7 @@ const HeaderAdmin = () => {
                   <Link to={"/MenuAdmin"}>Menu</Link>
                 </li>
                 <li>
-                  <Link to={"/"}>Return</Link>
+                  <Link to={"/"}>logout</Link>
                 </li>
               </ul>
             </Box>
