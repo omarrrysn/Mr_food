@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../../styles/Menu.css";
 import axios from "axios";
 import CloseIcon from '@mui/icons-material/Close';
-import { subItem , images ,insertOrderDetails ,insertMainOrder, selectOrderId, updateTotaleprice} from "../../constants/API";
+import { subItem , images ,insertOrderDetails ,insertMainOrder, selectOrderId, updateTotaleprice, selectOrderDetails} from "../../constants/API";
 import { Box, Divider, Drawer, Typography } from "@mui/material";
 import { CircularProgress } from '@mui/material';
 
@@ -20,21 +20,23 @@ const ThirdMenu = ({ data,tbl,tm,dt }) => {
   const [chef,setChef]=useState([]);
   const [notes,setNotes]=useState([]);
   const id = data;
-
+  const[orderDetails,setOrderDetaials]=useState([]);
   const [hours, sethours]=useState(`${tm}`);
   const [date, setDate] = useState(`${dt}`);
   const [mainorder,setMainOrder]=useState(0);
   const tblId=tbl;
   const [orderLoading,setOrderLoading]=useState(false);
+  const [totalOrderPrice,setTotalOrderPrice]=useState();
+  const[number,setNumber]=useState(1);
+
+
  
 
-  
- 
 
 
 
-
-  const handleAdd=(id, nm,pr,chf,num  )=>{
+  const handleAdd=(mainId,id, nm,pr,chf,num  )=>{
+   console.log(mainId);
     if (num > 0) {
       setOrder((prevOrder) => ({
         ...prevOrder,
@@ -56,6 +58,12 @@ const ThirdMenu = ({ data,tbl,tm,dt }) => {
         ...c,
         [id]:chf
       }))
+
+      if (mainId === "121") {
+        setNumber(0.5);
+      } else {
+        setNumber(1);
+      }
     } else {
       const { [id]: _, ...rest } = order;
       const {[id]: r, ...restId }= Id
@@ -83,7 +91,59 @@ const ThirdMenu = ({ data,tbl,tm,dt }) => {
     setOpen(true); 
     setMainOrder(mainorder + 1);
   }
+// get the updated price to show it in the order detais 
+  const getTotalPrice = async () => {
+    const formData = new FormData();
+    formData.append('tableid', tblId);
+    formData.append('date', date);
+    formData.append('time', hours);
+    try {
+      const response = await axios.post(updateTotaleprice, formData);
+      const { message, totalPrice2 } = response.data;
+      console.log(message); // Log the message if needed
+      console.log(totalPrice2); // Log the updated totalPrice
+      setTotalOrderPrice(totalPrice2); // Set the totalPrice state variable
+    } catch (error) {
+      console.error('Error:123', error);
+    }
+  };
 
+
+
+
+
+
+
+// select the order details 
+const handleOrderDetails = async (e) => {
+   
+    const formData = new FormData();
+    formData.append('tableid', tblId);
+    formData.append('date', date);
+    formData.append('time', hours);
+  
+  
+    try {
+      const response = await axios.post(selectOrderDetails, formData);
+  
+      const data = response.data;
+      
+      
+      setOrderDetaials(data.orderDetails);
+      getTotalPrice();
+  } catch (error) {
+      console.error('Error:', error);
+  }
+  
+       
+      
+  };
+
+
+
+
+
+// Create the main order 
   const handleSubmit = async (e) => {
 handler();
 if(mainorder+1==1){
@@ -108,7 +168,7 @@ if(mainorder+1==1){
     
 };
 
-
+// insert the Order details 
   const handleInsert = () => {
       setOrderLoading(true);
       const formData = new FormData();
@@ -117,7 +177,7 @@ if(mainorder+1==1){
       formData.append('date', date);
       formData.append('total',totalPrice);
   
-      // Assuming selectedIds, chef, order, price, and notes are arrays
+  
       const dataToSend = selectedIds.map((Id) => ({
         id: Id,
         chef: chef[Id],
@@ -141,7 +201,7 @@ if(mainorder+1==1){
         setOrder([]);
         setPrice([]);
         setNotes([]);
-        setOpen(false);
+        handleOrderDetails();
         setOrderLoading(false);
         axios.post(updateTotaleprice, formData, {
           headers: {
@@ -165,7 +225,7 @@ if(mainorder+1==1){
 
  
   useEffect(() => {
-    axios
+      axios
       .get(
         ` ${subItem} ${id}`
       )
@@ -179,8 +239,6 @@ if(mainorder+1==1){
       });
     }, [id]);
     
-    
-
   
   
   return (
@@ -209,7 +267,7 @@ if(mainorder+1==1){
           sx={{
             "& .MuiDrawer-paper": {
               width: "100%",
-              height:"40%",
+              height:"100%",
               backgroundColor: "#21211f",
             },
           }}
@@ -244,7 +302,7 @@ if(mainorder+1==1){
 <th>Name</th>
 <th>Quantity</th>
 <th>price</th>
-<th>Notes</th>
+<th style={{textAlign:"center"}}>Notes</th>
 </tr>
 </thead>
 <tbody>
@@ -252,17 +310,17 @@ if(mainorder+1==1){
 <tr key={index}>
 
 <td>
-<p style={{ margin: 0, padding: '5px 10px', background: '#f0f0f0', borderRadius: '5px', display: 'inline-block', marginRight: '10px' }}>
+<p >
 {selectedNames[index]}
 </p>
 </td>
 <td>
-<p style={{ margin: 0, padding: '5px 10px', background: '#f0f0f0', borderRadius: '5px', display: 'inline-block', marginRight: '10px' }}>
+<p >
 {selectedQuantities[index]}
 </p>
 </td>
 <td>
-<p style={{ margin: 0, padding: '5px 10px', background: '#f0f0f0', borderRadius: '5px', display: 'inline-block', marginRight: '10px' }}>
+<p >
 {selectedprices[index] * selectedQuantities[index]} $
 </p>
 </td>
@@ -275,7 +333,7 @@ onChange={(e) => {
 const newNotes = { ...notes, [Id]: e.target.value };
 setNotes(newNotes);
 }}
-style={{border:"none",outline:"none", padding:"10px",fontSize:"20px"}}
+style={{border:"none",outline:"none", padding:"7px",fontSize:"10px"}}
 />
 </td>
 
@@ -299,6 +357,68 @@ style={{border:"none",outline:"none", padding:"10px",fontSize:"20px"}}
 
 </div>
 </div>
+{/* Order Details */}
+<Divider />
+<Typography color={"goldenrod"} variant={"h6"} component={"div"} sx={{ flexGrow: 1.5 }}>
+            Your Order Details: 
+            </Typography>
+<Divider />
+    <div>
+    <table className="borderedTable">
+    <thead>
+    <tr>
+    <th>Name</th>
+    <th>Quantity</th>
+    <th>price</th>
+    <th style={{textAlign:"center"}}>Notes</th>
+    </tr>
+    </thead>
+    <tbody>
+  {orderDetails.map((o,index)=>(
+    <tr key={index}>
+    
+    <td>
+    <p >
+    {o.name}
+    </p>
+    </td>
+    <td>
+    <p >
+    {o.quantity}
+    </p>
+    </td>
+    <td>
+    <p > 
+    {o.price * o.quantity} $
+    </p>
+    </td>
+    
+    <td>
+   <p>
+    {o.note}
+   </p>
+    </td>
+    
+    </tr>
+    
+    ))}
+    <tr>
+      <td colSpan="3" style={{ textAlign: 'right',textAlign:"center" }}>
+         <h1>
+          Total Price
+          </h1> 
+          </td>
+      <td><h1>{totalOrderPrice}</h1>
+      </td>
+    </tr>
+ 
+    </tbody>
+    </table>
+    </div>
+
+
+
+
           </Box>
         </Drawer>
       )}
@@ -322,9 +442,9 @@ style={{border:"none",outline:"none", padding:"10px",fontSize:"20px"}}
 
 
             <div className="order">
-              <button
-                className="button "
-                onClick={() => handleAdd(subItem.id,subItem.Name,subItem.price,subItem.chefId ,order[subItem.id] ? order[subItem.id] - 1 : 0)}
+            <button
+                className="button"
+                onClick={() => handleAdd(subItem.menuitemId, subItem.id, subItem.Name, subItem.price, subItem.chefId, order[subItem.id] ? order[subItem.id] - number : 0)}
               >
                 -
               </button>
@@ -332,11 +452,12 @@ style={{border:"none",outline:"none", padding:"10px",fontSize:"20px"}}
               {order[subItem.id] || 0} 
               </h1>
               <button
-                className="button "
-                onClick={() => handleAdd(subItem.id,subItem.Name,subItem.price,subItem.chefId  , (order[subItem.id] || 0) + 1)}
+                className="button"
+                onClick={() => handleAdd(subItem.menuitemId,subItem.id, subItem.Name, subItem.price, subItem.chefId, (order[subItem.id] || 0) + number)}
               >
                 +
               </button>
+
 
              
 

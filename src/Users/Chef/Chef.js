@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import "./Chef.css";
+import "../Chef/Chef.css";
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
-import { chefOrder, updateOrderStatusChef } from '../../constants/API';
+import { chefOrder,UpdateChef } from '../../constants/API';
+
 function Chef() {
   const location = useLocation();
   const { id, name } = location.state;
@@ -10,43 +11,41 @@ function Chef() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   
-  useEffect(() => {
-    const fetchOrders = async () => {
-      setIsLoading(true);
-      try {
-        const response = await axios.get(`${chefOrder}${id}`);
-        if (!response.data || response.data.error) {
-          throw new Error('Failed to fetch orders');
-        }
-        const modifiedOrders = response.data.reduce((acc, order) => {
-          if (!acc[order.OrderId]) {
-            acc[order.OrderId] = {
-              orderId: order.OrderId,
-              items: []
-            };
-          }
-          acc[order.OrderId].items.push({
-            itemName: order.itemName,
-            quantity: order.quantity,
-            note: order.note,
-            status :order.status
-          });
-          return acc;
-        }, {});
-        setOrders(modifiedOrders);
-        setError('');
-      } catch (error) {
-        console.error('Error fetching orders:', error);
-        setError('Failed to fetch orders. Please try again.');
-      } finally {
-        setIsLoading(false);
+  const fetchOrders = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get(`${chefOrder} ${id}`);
+      if (!response.data || response.data.error) {
+        throw new Error('Failed to fetch orders');
       }
-    };
+      const modifiedOrders = response.data.reduce((acc, order) => {
+        if (!acc[order.OrderId]) {
+          acc[order.OrderId] = {
+            orderId: order.OrderId,
+            items: []
+          };
+        }
+        acc[order.OrderId].items.push({
+          itemName: order.itemName,
+          quantity: order.quantity,
+          note: order.note,
+          status : order.status
+        });
+        return acc;
+      }, {});
+      setOrders(modifiedOrders);
+      setError('');
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+      setError('Failed to fetch orders. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
+  useEffect(() => {
     if (id) {
       fetchOrders();
-      const interval = setInterval(fetchOrders, 30000);
-      return () => clearInterval(interval);
     }
   }, [id]); 
 
@@ -59,76 +58,31 @@ function Chef() {
       }
     }));
   };
-
-
-
-  const handleCookingStatusChange = async (orderId) => {
+ 
+  const updateOrderStatus = async (orderId, status) => {
     try {
-      await axios.post( updateOrderStatusChef, [
-        { OrderId: orderId, status: 'Cooking' }
-      ]);
-      const updatedOrders = orders.map(order => {
-        if (order.OrderId === orderId) {
-          return { ...order, status: 'Cooking' };
-        }
-        return order;
+      await axios.post(UpdateChef, {
+        OrderId: orderId,
+        status: status,
       });
-      setOrders(updatedOrders);
+      console.log({status}, {orderId});
     } catch (error) {
-      console.error('Error updating cooking status:', error);
+      console.error(`Error updating ${status} status for orderId ${orderId}:`, error);
     }
   };
-  
-
-  
-  const handleReadyStatusChange = async (orderId) => {
-    try {
-      await axios.post(updateOrderStatusChef, [
-        { OrderId: orderId, status: 'Ready' }
-      ]);
-      const updatedOrders = orders.map(order => {
-        if (order.OrderId === orderId) {
-          return { ...order, status: 'Ready' };
-        }
-        return order;
-      });
-      setOrders(updatedOrders);
-    } catch (error) {
-      console.error('Error updating ready status:', error);
-    }
-  };
-  
-  const handleTakenStatusChange = async (orderId) => {
-    try {
-      await axios.post(updateOrderStatusChef, [
-        { OrderId: orderId, status: 'Taken' }
-      ]);
-      const updatedOrders = orders.map(order => {
-        if (order.OrderId === orderId) {
-          return { ...order, status: 'Taken' };
-        }
-        return order;
-      });
-      setOrders(updatedOrders);
-    } catch (error) {
-      console.error('Error updating taken status:', error);
-    }
-  };
-  
-  
   
   return (
     <>
-      <div className='Container'>
-        <div className='ContainerIcon'>
+      <div className='ContainerChef'>
+        <div className='ContainerIconChef'>
           <h4>{name} <br/> The ID: {id} </h4>
         </div>
-        <div className="line"></div>
+        <div className="lineChef"></div>
         <p>Orders</p>
         <p className='p2'></p>
-        <div className="line"></div>
+        <div className="lineChef"></div>
       </div>
-      <div className='OrderContainer'>
+      <div className='OrderContainerChef'>
         <div className='Order'>
           {isLoading ? (
             <p>Loading orders...</p>
@@ -136,46 +90,43 @@ function Chef() {
             <p className="error">{error}</p>
           ) : (
             Object.values(orders).map((order, index) => (
-              <div key={index} className="order">
-                <div className='Order1'>
+              <div key={index} className="orderChef">
+                <div className='OrderChef1'>
                   <p>Order ID: {order.orderId}</p>
                 </div>
-                <div className='Status'>
-                    <div className='Status1'>
-                        <p>Status</p>
+                <div className='StatusChef'>
+                    <div className='StatusChef1'>
+                        <p>Status {order.status}</p>
                       </div>
-                      <div className="checkbox-label">
+                      <div className="checkbox-labelChef">
                       <input
                           type="checkbox"
-                          checked={(order.status === 'Cooking')}
-                          onChange={() => handleCookingStatusChange(order.OrderId)} 
+                          onChange={() => updateOrderStatus(order.orderId, 'Cooking')} 
                         />
                         <p>Cooking</p>
                       </div>
-                      <div className="checkbox-label">
+                      <div className="checkbox-labelChef">
                       <input
                           type="checkbox"
-                           checked={(order.status === 'Ready')}
-                          onChange={() => handleReadyStatusChange(order.OrderId)}
+                          onChange={() => updateOrderStatus(order.orderId, 'Ready')}
                         />
                         <p>Ready</p>
                       </div>
-                      <div className="checkbox-label">
+                      <div className="checkbox-labelChef">
                       <input
                         type="checkbox"
-                        checked={(order.status === 'Taken')}
-                        onChange={() => handleTakenStatusChange(order.OrderId)}
+                        onChange={() => updateOrderStatus(order.orderId, 'Taken')}
                        />
                         <p>Taken</p>
                       </div>
                 </div>
                 <div>
-                  <button className='Details' onClick={() => handleToggleOrderDetails(order.orderId)}>
+                  <button className='DetailsChef' onClick={() => handleToggleOrderDetails(order.orderId)}>
                     <p>{order.showDetails ? 'Hide Details' : 'Show Details'}</p>
                   </button>
                   {order.showDetails && (
-                    <div className='OrderDetails'>
-                      <table className='tableOrder'>
+                    <div className='OrderDetailsChef'>
+                      <table className='tableOrderChef'>
                         <thead>
                           <tr>
                             <th>Item Name</th>
@@ -214,6 +165,5 @@ function renderItems(items) {
     </tr>
   ));
 }
-
 
 export default Chef;

@@ -1,19 +1,22 @@
 import React from "react";
 import Layout from "../../compounent/layout/layout";
 import images from "../../constants/images";
-import "../About/About.css";
+import "../About/about.css";
 
 const About = () => {
   return (
+    <div>
+
     <Layout>
-      <div className="Container">
+      <br></br>
+      <div className="ContainerAbout">
         <div
-          className="div"
+          className="divAbout"
           style={{ backgroundImage: `url(${images.AboutImage})` }}
         >
           {" "}
         </div>
-        <div className="content">
+        <div className="contentAbout">
           <h1>About Us</h1>
           <div className="divSpan">
             <span>________</span>
@@ -36,6 +39,8 @@ const About = () => {
         </div>
       </div>
     </Layout>
+    </div>
+
   );
 };
 

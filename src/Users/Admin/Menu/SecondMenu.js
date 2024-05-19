@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import ThirdMenu from "./ThirdMenu";
 import "../../../styles/Menu.css";
 import axios from "axios";
-import { secondList, insertItems,images,selectchef , deleteSecond} from "../../../constants/API";
+import { secondList, insertItems,images,selectchef , deleteSecond, updateItems} from "../../../constants/API";
 import { CircularProgress } from '@mui/material';
 
 const SecondMenu = ({ idd }) => {
@@ -15,10 +15,14 @@ const SecondMenu = ({ idd }) => {
   const [data,setdata]=useState([]);
   const [reload ,setReload]=useState(false);
  const [dlt ,setDelete]=useState('');
- const [edit,setEdit]=useState(false);
+ const [edit,setEdit]=useState();
 const [message,setMessage]=useState('');
 const [dltReload , setdltReload] = useState(false);
-const [editItem, setEditItem] = useState(null);
+const [editName, setEditName] = useState("");
+const [editPhoto, setEditPhoto] = useState(null);
+const [editChef, setEditchef] = useState(null);
+const [openEdit,setOpenEdit]=useState(false);
+const [display,setDisplay]=useState("");
   const handleNameChange = (e) => {
       setName(e.target.value);
   };
@@ -52,7 +56,41 @@ const [editItem, setEditItem] = useState(null);
       });
   };
 
+  const handleEdit = async (e) => {
+    e.preventDefault();
 
+    const formData = new FormData();
+    formData.append('id', edit.id);
+    formData.append('name', editName);
+    formData.append('image', editPhoto);
+    formData.append('chef',editChef);
+
+
+    try {
+        const response = await axios.post(updateItems, formData);
+        console.log(response.data.message);
+        axios
+        .get(`${secondList} ${id}`)
+        .then((response) => {
+          setElements(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching elements:", error);
+        });
+     
+    } catch (error) {
+        console.error('Error:', error);
+    }
+
+
+  }
+
+  const handleEditNameChange = (e) => {
+    setEditName(e.target.value);
+};
+  const handleEditphotoChange = (e) => {
+    setEditPhoto(e.target.value);
+};
 
 
   const handleSubmit = async (e) => {
@@ -189,38 +227,36 @@ const [editItem, setEditItem] = useState(null);
               onClick={() => { setDelete(item.id); handleDelete();setdltReload(true) }} > Delete </button>
               <br></br>
               <br></br>
-              {/* <button
-        style={{ padding: "8px", borderRadius: "10px" }}
-        onClick={() => { setEditItem(item); setEdit(true); }}
+              <button
+        style={{ padding: "8px", borderRadius: "10px",display:display }}
+        onClick={() => { setEdit(item); setOpenEdit(true);setDisplay("none");setEditName(item.name) }}
       >
         Edit
-      </button> */}
+      </button>
             </h3>
-            {/* {edit && editItem.id === item.id && (
-      <form onSubmit={(e) => {
-          e.preventDefault();
-          
-          }}>
+            {openEdit && edit.id === item.id && (
+      <form style={{display:"flex",flexDirection:"column", justifyContent:"center", width:"80px"}}  onSubmit={handleEdit}>
               <br></br>
         <br></br>
         <input
           type="text"
-          value={editItem.name}
-          onChange={(e) => setEditItem({ ...editItem, name: e.target.value })}
+          value={editName}
+          onChange={handleEditNameChange}
         />
         
           <br></br>
         <br></br>
         <input
-          type="file"
-          onChange={(e) => setEditItem({ ...editItem, image: e.target.files[0] })}
+          type="file" accept="image/*"
+          onChange={handleEditphotoChange}
         />
        
         <br></br>
         <br></br>
-        <button type="submit"   >Save</button>
+        <button type="submit"  style={{ padding: "8px", borderRadius: "10px" }}
+        onClick={() => { }} >Save</button>
       </form>
-    )} */}
+    )}
 
 
           

@@ -11,8 +11,9 @@ import Tables from "./Users/Admin/Tables/Tables";
 import Login from "./Users/Login/Login";
 import LoginUsers from "./Users/LoginUsers/Login";
 import Chef from "./Users/Chef/Chef";
-import Casher from "./Users/Casher/Casher";
+import Casher from "./Users/Cashier/Cashier";
 import Manger from "./Users/Manger/Manger";
+import CasherHistory from "./Users/Cashier/CashierHistory";
 function App() {
   const n =0;
   return (
@@ -28,8 +29,9 @@ function App() {
           <Route path="/MenuAdmin" element={<MenuAdmin/>}/>
           <Route path="/Accounts" element={<Accounts/>}/>
           <Route path="/Orderr" element={<OrderDetails/>}/>
+          <Route path="/CashierHistory" element={<CasherHistory/>}/>
           <Route path="/LoginUsers" element={<LoginUsers/>}/>
-        <Route path="/Casher" element={<Casher/>}/>
+        <Route path="/Cashier" element={<Casher/>}/>
         <Route path="/Chef" element={<Chef/>}/>
         <Route path="/Manger" element={<Manger/>}/>
           <Route path="*" element={<PageNotFound />} />

@@ -37,6 +37,8 @@ const Login = () => {
       const response = await axios.post(LoginTables, formData);
 
       if (response.data.success) {
+        setName("");
+        setPassword("");
         const tableId = response.data.tableId;
         setLoading(false);
         console.log('Login successful');

@@ -47,7 +47,7 @@ const LoginUsers = () => {
           console.log({ id, name, role });
         } else if (role ===400){
           setTimeout(() => {
-            navigate(`/Casher`, { state: { id, name, role } });
+            navigate(`/Cashier`, { state: { id, name, role } });
           }, 3000); // Delay for 3 seconds
           console.log({ id, name, role });
         }else {

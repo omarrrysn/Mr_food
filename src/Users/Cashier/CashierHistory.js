@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import './Casher.css';
+import { useNavigate } from 'react-router-dom';
+import './casher.css';
 import axios from 'axios';
-import { OrderCasher, updateStatus } from '../../constants/API';
+import { orderHistory , updateCasher } from '../../constants/API';
 
+  
 
-function Casher() {
+function CasherHistory() {
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  
+
+
+
 
   useEffect(() => {
-    // Simulate a login process (replace this with your actual login logic)
     const login = async () => {
       setIsLoading(true);
       try {
-        // Simulate a login request (replace this with your actual login request)
-        // For example, you might have an API endpoint for user authentication
-        await new Promise(resolve => setTimeout(resolve, 3000));
         setIsLoggedIn(true);
       } catch (error) {
         console.error('Login failed:', error);
@@ -36,7 +36,7 @@ function Casher() {
   
     const fetchOrders = async () => {
       try {
-        const response = await axios.get(OrderCasher);
+        const response = await axios.get(orderHistory);
   
         if (isMounted) {
           // console.log('Response data:', response.data);
@@ -75,18 +75,18 @@ function Casher() {
         await fetchOrders(); 
   
         while (isMounted) {
-          await new Promise(resolve => setTimeout(resolve, 5000)); // Wait for 5 seconds before making the next request
-          await fetchOrders(); // Fetch orders again
+          await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for 1 seconds before making the next request
+          await fetchOrders(); 
         }
       } catch (error) {
         console.error('Long poll error:', error);
       }
     };
   
-    longPoll(); // Start long polling
+    longPoll(); 
   
     return () => {
-      isMounted = false; // Set isMounted to false to stop the long polling loop
+      isMounted = false; 
     };
   }, []);
   
@@ -100,7 +100,7 @@ function Casher() {
   
   const handleRecordedChange = async (orderId) => {
     try {
-      await axios.post(updateStatus, [
+      await axios.post(updateCasher, [
         { OrderId: orderId, recorded: 'Recorded' }
       ]);
       const updatedOrders = orders.map(order => {
@@ -117,11 +117,9 @@ function Casher() {
   
   const handleNotRecordedChange = async (orderId) => {
     try {
-      // Update the recorded status to 'not recorded'
-      await axios.post('https://mrfooda7a.000webhostapp.com/php/updateStatus.php', [
+      await axios.post(updateCasher, [
         { OrderId: orderId, recorded: 'Not Recorded' }
       ]);
-      // Update the recorded status locally
       const updatedOrders = orders.map(order => {
         if (order.OrderId === orderId) {
           return { ...order, recorded: 'Not Recorded' };
@@ -134,32 +132,41 @@ function Casher() {
     }
   };
 
+  const navigate = useNavigate();
+
+
+  const handleNavigateHistory = () =>{
+    navigate(`/Cashier`);
+  }
+
   
 
   return (
     <>
-      <div className='Container'>
-        <div className='ContainerIcon'>
-          <h1>Casher  </h1>
+      <div className='ContainerCashier'>
+        <div className='ContainerIconCashier'>
+          <h1>Cashier</h1>  
+          <button onClick={handleNavigateHistory} >Back</button>
+          
         </div>
-        <div className='line'></div>
+        <div className='lineCashier'></div>
         <p>Orders</p>
         <p className='p2'></p>
-        <div className='line'></div>
+        <div className='lineCashier'></div>
       </div>
-      <div className='OrderContainer'>
+      <div className='OrderContainerCashier'>
       
-      <div className='Order1'>
-            <p> Order ID:  </p>
-          </div>
+      
                 {isLoading ? (
           <p>Loading orders...</p>
         ) : error ? (
           <p className="error">{error}</p>
         ) : (
-          orders.map(order => (
-            <div key={order.OrderId} className="Order">
-              <div className='OrderTable'>
+          orders
+          .sort((a, b) => new Date(b.date) - new Date(a.date))
+          .map(order => (
+            <div key={order.OrderId} className="OrderCashier">
+              <div className='OrderTableCashier'>
                 <table>
                   <tbody>
                     <tr>
@@ -213,13 +220,15 @@ function Casher() {
                     </tr>
                   </tbody>
                 </table>
+               
               </div>
 
-              <div className='Status'>
-                <div className='Status1'>
+              <div className='StatusCashier'>
+                <div className='StatusCashier1'>
                   <p>Status</p>
+
                 </div>
-                <div className="checkbox-label">
+                <div className="checkbox-labelCashier">
                 <input
                 type="checkbox"
                 checked={(order.recorded === 'Not Recorded')}
@@ -227,7 +236,7 @@ function Casher() {
               />
                   <p>Not Recorded</p>
                 </div>
-                <div className="checkbox-label">
+                <div className="checkbox-labelCashier">
                 <input
                     type="checkbox"
                     checked={(order.recorded === 'Recorded')}
@@ -235,6 +244,7 @@ function Casher() {
                   />
                   <p>Recorded</p>
                 </div>
+                
               </div>
             </div>
           ))
@@ -244,4 +254,4 @@ function Casher() {
   );
 }
 
-export default Casher;
+export default CasherHistory;
