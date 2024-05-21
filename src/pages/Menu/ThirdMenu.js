@@ -81,7 +81,7 @@ const ThirdMenu = ({ data,tbl,tm,dt }) => {
     }
   }
  
-  const selectedchef = Object.keys(order).filter((id) => order[id] > 0).map((id) => chef[id]);
+  // const selectedchef = Object.keys(order).filter((id) => order[id] > 0).map((id) => chef[id]);
   const selectedNames = Object.keys(order).filter((id) => order[id] > 0).map((id) => name[id]);
   const selectedprices = Object.keys(order).filter((id) => order[id] > 0).map((id) => price[id]);
   const selectedIds = Object.keys(order).filter((item) => order[item] > 0);
@@ -114,7 +114,6 @@ const ThirdMenu = ({ data,tbl,tm,dt }) => {
 
 
 
-// select the order details 
 const handleOrderDetails = async (e) => {
    
     const formData = new FormData();
@@ -148,11 +147,12 @@ const handleOrderDetails = async (e) => {
 handler();
 if(mainorder+1==1){
   e.preventDefault();
+  const tlt=0;
   const formData = new FormData();
   formData.append('tblId', tblId);
   formData.append('date', date);
   formData.append('time', hours);
-  formData.append('totalPrice',totalPrice);
+  formData.append('totalPrice',tlt);
 
 
   try {

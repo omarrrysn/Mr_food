@@ -6,7 +6,7 @@ import Order from "./Users/Admin/Orders/Order";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MenuAdmin from "./Users/Admin/Menu/MenuAdmin";
 import Accounts from "./Users/Admin/Accounts/Accounts";
-import OrderDetails from './pages/Menu/OrderDetails';
+
 import Tables from "./Users/Admin/Tables/Tables";
 import Login from "./Users/Login/Login";
 import LoginUsers from "./Users/LoginUsers/Login";
@@ -28,7 +28,6 @@ function App() {
           <Route path="/Admin" element={<Order/>}/>
           <Route path="/MenuAdmin" element={<MenuAdmin/>}/>
           <Route path="/Accounts" element={<Accounts/>}/>
-          <Route path="/Orderr" element={<OrderDetails/>}/>
           <Route path="/CashierHistory" element={<CasherHistory/>}/>
           <Route path="/LoginUsers" element={<LoginUsers/>}/>
         <Route path="/Cashier" element={<Casher/>}/>

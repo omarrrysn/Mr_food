@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../../../styles/Menu.css";
 import axios from "axios";
-import { subItem , insertSubItems,images ,deleteThird } from "../../../constants/API";
+import { subItem , insertSubItems,images ,deleteThird , updateSubItems} from "../../../constants/API";
 import { CircularProgress } from '@mui/material';
 
 
@@ -15,7 +15,14 @@ const ThirdMenu = ({ data }) => {
   const [message,setMessage]=useState('');
 const [dltReload , setdltReload] = useState(false);
  const [dlt ,setDelete]=useState('');
-  
+ const [edit,setEdit]=useState();
+const [editName, setEditName] = useState("");
+const [editPhoto, setEditPhoto] = useState(null);
+const [editChef, setEditchef] = useState(null);
+const [openEdit,setOpenEdit]=useState(false);
+const [display,setDisplay]=useState("");
+const [editPrice,setEditPrice]=useState();
+const [editLoad,setEditLoad]=useState(false);
 
 
   const handleNameChange = (e) => {
@@ -75,6 +82,59 @@ const handleDelete = () => {
       console.error("Error fetching elements:", error);
     });
 };
+
+
+
+const handleEditNameChange = (e) => {
+  setEditName(e.target.value);
+};
+const handleEditPriceChange = (e) => {
+  setEditPrice(e.target.value);
+};
+const handleEditphotoChange = (e) => {
+  setEditPhoto(e.target.files[0]);
+};
+
+
+
+const handleEdit = async (e) => {
+  e.preventDefault();
+
+  const formData = new FormData();
+  formData.append('id', edit.id);
+  formData.append('name', editName);
+  formData.append('price', editPrice);
+  formData.append('image', editPhoto);
+
+  setEditLoad(true); 
+  try {
+      const response = await axios.post(updateSubItems, formData);
+      console.log(response.data.message);
+      setDisplay("");
+      setEditPhoto("");
+      setOpenEdit(false);
+setEditLoad(false);
+      axios
+      .get(`${subItem} ${id}`)
+      .then((response) => {
+        setElements(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching elements:", error);
+      });
+   
+  } catch (error) {
+      console.error('Error:', error);
+  }
+
+
+}
+
+
+
+
+
+
 
 
 useEffect(() => {
@@ -155,7 +215,67 @@ useEffect(() => {
             <h4>{subItem.price}$</h4>
 
             <button style={{padding:"8px" ,borderRadius:"10px"}} onClick={() => { setDelete(subItem.id); handleDelete();setdltReload(true) }} > Delete </button>
+            {/* Edit */}
+<br></br>
+<br></br>
+
+            <button
+        style={{ padding: "8px", borderRadius: "10px" }}
+        onClick={() => { setEdit(subItem); setOpenEdit(true);setDisplay("none");setEditName(subItem.Name);setEditPrice(subItem.price) }}
+      >
+        Edit
+      </button>
+            {openEdit && edit.id === subItem.id && (
+      <form style={{display:"flex",flexDirection:"column", justifyContent:"center" }} onSubmit={handleEdit} >
+        <div style={{display:"flex",flexDirection:"row", justifyContent:"center", }}>
+
+
+      
+              <br></br>
+        <br></br>
+        <label style={{color:"white"}}>Name:</label>
+        <input
+
+          type="text"
+          value={editName}
+         style={{marginLeft:"10px",width:"100px",height:"30px"}}
+         onChange={handleEditNameChange}
+        />
+          <label style={{color:"white"}}>price:</label>
+        <input
+          type="text"
+          value={editPrice}
+         style={{marginLeft:"10px",width:"80px",height:"30px"}}
+         onChange={handleEditPriceChange}
+        />
+        
+        <input
+         style={{marginLeft:"20px"}}
+          type="file" accept="image/*"
+         onChange={handleEditphotoChange}
+        />
+         </div>
+        <br></br>
+        <button type="submit"  style={{  marginLeft:"250px",  padding: "8px", borderRadius: "10px",width:"50px" }}
+        onClick={() => { }} >Save</button>
+            {editLoad && (
+    <div className="reload">
+<h2 >Loding...  
+<CircularProgress style={{marginLeft:"15px"}}  className="reload-icon" />
+
+</h2>
+    </div>
+
+  )}
+      </form>
+    )}
             
+
+
+
+
+
+
           </div>
         ))}
       </div>

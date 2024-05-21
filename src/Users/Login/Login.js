@@ -88,7 +88,7 @@ const Login = () => {
         </div>
         <button type="submit" className="login-btn">Login</button>
         <br></br>
-        {error && <p className="error">{error}</p>}
+        {error && <p style={{color:"white"}} className="error">{error}</p>}
       </form>
         <button className="login-btn"  onClick={handleOpen} >Login Users</button>
         <button className="login-btn"  onClick={handletest} >Menu</button>

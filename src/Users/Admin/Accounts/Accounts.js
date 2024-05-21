@@ -10,7 +10,10 @@ const [password , setpassword]= useState('');
 const [role , setRole]=useState();
 const[data,setData]=useState([]);
 const [users , setUsers] =useState([]);
-
+const [openEdit,setOpenEdit]=useState(false);
+const [editName,setEditName]=useState();
+const [editpassword,setEditPassword]=useState();
+const [EditRole, setEditRole]=useState();
 
 
 
@@ -141,6 +144,7 @@ const handleSubmit = async (e) => {
       <th>Email</th>
       <th>password</th>
       <th>role</th>
+      <th>Edit</th>
     </tr>
   </thead>
 
@@ -169,8 +173,11 @@ const handleSubmit = async (e) => {
       </td>
       <td>
         <p style={{ margin: 0, padding: '5px 10px', background: '#f0f0f0', borderRadius: '5px', display: 'inline-block', marginRight: '10px' }}>
-          {u.role}
+          {u.Role}
         </p>
+      </td>
+      <td>
+        <button style={{padding:"8px",borderRadius:"30px"}}> Edit </button>
       </td>
 
 

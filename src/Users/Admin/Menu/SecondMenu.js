@@ -23,6 +23,7 @@ const [editPhoto, setEditPhoto] = useState(null);
 const [editChef, setEditchef] = useState(null);
 const [openEdit,setOpenEdit]=useState(false);
 const [display,setDisplay]=useState("");
+const [editLoad,setEditLoad]=useState(false);
   const handleNameChange = (e) => {
       setName(e.target.value);
   };
@@ -35,6 +36,9 @@ const [display,setDisplay]=useState("");
 
   const handelRoleChange=(e)=>{
     setChef(e.target.value);
+  }
+  const handelEditRoleChange=(e)=>{
+    setEditchef(e.target.value);
   }
 
   
@@ -65,10 +69,14 @@ const [display,setDisplay]=useState("");
     formData.append('image', editPhoto);
     formData.append('chef',editChef);
 
-
+    setEditLoad(true); 
     try {
         const response = await axios.post(updateItems, formData);
         console.log(response.data.message);
+        setDisplay("");
+        setEditPhoto("");
+        setOpenEdit(false);
+setEditLoad(false);
         axios
         .get(`${secondList} ${id}`)
         .then((response) => {
@@ -89,7 +97,7 @@ const [display,setDisplay]=useState("");
     setEditName(e.target.value);
 };
   const handleEditphotoChange = (e) => {
-    setEditPhoto(e.target.value);
+    setEditPhoto(e.target.files[0]);
 };
 
 
@@ -227,13 +235,13 @@ const [display,setDisplay]=useState("");
               onClick={() => { setDelete(item.id); handleDelete();setdltReload(true) }} > Delete </button>
               <br></br>
               <br></br>
+              </h3>
               <button
         style={{ padding: "8px", borderRadius: "10px",display:display }}
-        onClick={() => { setEdit(item); setOpenEdit(true);setDisplay("none");setEditName(item.name) }}
+        onClick={() => { setEdit(item); setOpenEdit(true);setDisplay("none");setEditName(item.name);setEditchef(item.chefId) }}
       >
         Edit
       </button>
-            </h3>
             {openEdit && edit.id === item.id && (
       <form style={{display:"flex",flexDirection:"column", justifyContent:"center", width:"80px"}}  onSubmit={handleEdit}>
               <br></br>
@@ -250,11 +258,29 @@ const [display,setDisplay]=useState("");
           type="file" accept="image/*"
           onChange={handleEditphotoChange}
         />
-       
+
+<label style={{color:"white"}}>chef:</label>
+            <select  name="menuList"   style={{width:"110px"}} value={editChef}  onChange={handelEditRoleChange}>
+            <option   value="">Choose a chef</option>
+
+              {data.map((r)=>(
+                
+                  <option   value={r.id}>{r.name}</option>
+                  ))}
+                  </select>
         <br></br>
         <br></br>
         <button type="submit"  style={{ padding: "8px", borderRadius: "10px" }}
         onClick={() => { }} >Save</button>
+            {editLoad && (
+    <div className="reload">
+<h2 >Loding...  
+<CircularProgress style={{marginLeft:"15px"}}  className="reload-icon" />
+
+</h2>
+    </div>
+
+  )}
       </form>
     )}
 

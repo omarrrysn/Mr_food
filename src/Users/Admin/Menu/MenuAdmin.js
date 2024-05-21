@@ -28,7 +28,7 @@ function MenuAdmin() {
         console.log('Failed to insert data');
       }
     } catch (error) {
-      console.error('Error:', error);
+      // console.error('Error:', error);
     }
   };
 
@@ -40,7 +40,7 @@ function MenuAdmin() {
         setData(response.data);
       })
       .catch((error) => {
-        console.error("Error fetching data:", error);
+        // console.error("Error fetching data:", error);
       });
   };
 
@@ -52,8 +52,10 @@ function MenuAdmin() {
     <LayoutAdmin>
       <div style={{ height: 50 }}></div>
       <div className="firstList">
+
+
         {data.map((item) => (
-          <div key={item.id}>
+          <div key={item.id} style={{textAlign:"center"}}>
             <h2
               onClick={() => setSec(item.id)}
               style={{
@@ -63,6 +65,10 @@ function MenuAdmin() {
             >
               {item.firstList}
             </h2>
+
+       
+            
+
           </div>
         ))}
         <div style={{width:"20px"}}></div>

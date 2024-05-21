@@ -27,12 +27,15 @@ const updateCasher='https://mrfood777.000webhostapp.com/php/Users/UpdateCasher.p
 const orderHistory ='https://mrfood777.000webhostapp.com/php/Users/OrderHistory.php';
 const UpdateChef = 'https://mrfood777.000webhostapp.com/php/Users/UpdateChef.php';
 const updateItems='https://mrfood777.000webhostapp.com/php/updateItems.php';
+const updateSubItems='https://mrfood777.000webhostapp.com/php/updateSubItems.php';
+const updateList='';
 
 
 export {mainMenu, secondList,subItem , images , insertMainMenu ,
     insertSubItems, insertItems,selectedRole ,insertUsers ,selectedUsers,
     selectchef,insertTables,selectTables,deleteSecond,deleteThird,insertOrderDetails,LoginTables,insertMainOrder,updateTotaleprice,
-    LoginUser,chefOrder,OrderCasher,updateOrderStatusChef,updateStatus,selectOrderDetails,updateCasher,orderHistory,UpdateChef,updateItems 
+    LoginUser,chefOrder,OrderCasher,updateOrderStatusChef,updateStatus,selectOrderDetails,updateCasher,orderHistory
+    ,UpdateChef,updateItems,updateSubItems 
 };
 
 
