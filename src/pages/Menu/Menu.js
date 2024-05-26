@@ -9,7 +9,7 @@ import PageNotFound from './PageNotFound';
 
 function Menu() {
   const storedTableId = localStorage.getItem('tableId');
-  const [tableId1, setTableId] = useState(storedTableId || 0);
+  const [tableId1, setTableId] = useState(storedTableId || 23);
   const [sec, setSec] = useState(null);
   const [data, setData] = useState([]);
 const [reload,setReload]=useState(true);
@@ -31,7 +31,7 @@ const handlecheck=()=>{
 
 
 const handleTimeDate = () => {
-  
+    const dateObj = new Date();
   const hour = (new Date().getHours() % 12) || 12;
 const minutes = new Date().getMinutes();
 const amPm = new Date().getHours() < 12 ? 'AM' : 'PM';
@@ -44,9 +44,13 @@ if (minutes.toString().length < 2) {
 }
 
 sethours(tm);
-      
-      const currentDate = new Date().toLocaleDateString();
-      setDate(currentDate);
+const month = (dateObj.getMonth() + 1).toString();// Months are 0-based
+const day = dateObj.getDate().toString().padStart(2, '0');
+const year = dateObj.getFullYear();
+const formattedDate = `${month}/${day}/${year}`;
+
+// Set the formatted date
+setDate(formattedDate);
   };
   useEffect(() => {
     handlecheck();

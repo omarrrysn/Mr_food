@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import './Chef.css';
+import "./Chef.css";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { styled } from '@mui/material/styles';
-import { chefOrder, updateChef } from '../../constants/API';
+import { orderChefHistory, updateChef } from '../../constants/API';
 
 const GreenRedSwitch = styled(Switch)(({ theme }) => ({
   '& .MuiSwitch-switchBase.Mui-checked': {
@@ -28,7 +28,7 @@ const GreenRedSwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-function Chef() {
+function ChefHistory() {
   const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -36,8 +36,8 @@ function Chef() {
   const [id, setId] = useState(null);
 
   useEffect(() => {
-    const chefId = localStorage.getItem('id');
-    // const chefId =41;
+    // const chefId = localStorage.getItem('id');
+    const chefId =41;
     if (chefId) {
       setId(chefId);
     } else {
@@ -46,10 +46,10 @@ function Chef() {
   }, [navigate]);
 
   const fetchOrders = async (chefId) => {
-    // setIsLoading(true);
+    setIsLoading(true);
     setError('');
     try {
-      const response = await axios.get(`${chefOrder}${chefId}`);
+      const response = await axios.get(`${orderChefHistory}${chefId}`);
       if (!response.data || response.data.error) {
         throw new Error('Failed to fetch orders');
       }
@@ -72,9 +72,9 @@ function Chef() {
       setOrders(Object.values(modifiedOrders));
     } catch (error) {
       console.error('Error fetching orders:', error);
-      setError('Failed to fetch orders. Please try again.');
+      setError('No orders are Taken');
     } finally {
-      // setIsLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -84,11 +84,7 @@ function Chef() {
         OrderId: orderId,
         status: status,
       });
-      setOrders(prevOrders => 
-        prevOrders.map(order => 
-          order.orderId === orderId ? { ...order, items: order.items.map(item => ({ ...item, status })) } : order
-        )
-      );
+      fetchOrders(id);
     } catch (error) {
       console.error(`Error updating ${status} status for orderId ${orderId}:`, error);
     }
@@ -102,15 +98,15 @@ function Chef() {
     return () => {
       // Cleanup function
     };
-  }, [id,orders]);
+  }, [id]);
 
   const logout = () => {
     window.localStorage.clear();
     navigate('/LoginUsers');
   };
 
-  const ChefHistory = () => {
-    navigate('/ChefHistory');
+  const BackChef = () => {
+    navigate('/Chef');
   };
 
   return (
@@ -119,7 +115,7 @@ function Chef() {
         <div className='ContainerIconChef'>
           <h1>Chef</h1>  
           <button onClick={logout}>Log Out</button>
-          <button className='BuutonHistory' onClick={ChefHistory}>History</button>
+          <button className='BuutonHistory' onClick={BackChef}>Back </button>
         </div>
         <div className="lineChef"></div>
         <p>Orders</p>
@@ -134,7 +130,6 @@ function Chef() {
             <p className="error">{error}</p>
           ) : (
             orders
-            .sort((a, b) => b.orderId - a.orderId)
             .map((order, index) => (
               <div key={index} className="orderchef">
                 <div className='OrderCheff1'>
@@ -195,11 +190,12 @@ function Chef() {
                     </table>
                   </div>
                 </div>
+                <br></br>
+                <br></br>
                 <div style={{width:"100%", height:"20px",background:"black",borderRadius:"20px"}}></div>
               </div>
             ))
           )}
-
         </div>
       </div>
     </>
@@ -211,9 +207,7 @@ function renderItems(items) {
     return null;
   }
 
-  return items
-  .sort((a, b) => b.id - a.id)
-  .map((item, index) => (
+  return items.map((item, index) => (
     <tr key={index}>
       <td>{item.itemName}</td>
       <td>{item.quantity}</td>
@@ -222,4 +216,4 @@ function renderItems(items) {
   ));
 }
 
-export default Chef;
+export default ChefHistory;

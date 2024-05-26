@@ -3,6 +3,7 @@ import '../Accounts/accounts.css'
 import LayoutAdmin from '../../../compounent/Admin/LayoutAdmin'
 import axios from 'axios'
 import { selectedRole ,insertUsers,selectedUsers } from '../../../constants/API'
+import PageNotFound from '../../../pages/Menu/PageNotFound'
 const Accounts = () => {
 const [name , setName]=useState('');
 const [email , setEmail] = useState('');
@@ -14,7 +15,17 @@ const [openEdit,setOpenEdit]=useState(false);
 const [editName,setEditName]=useState();
 const [editpassword,setEditPassword]=useState();
 const [EditRole, setEditRole]=useState();
-
+const storedId=localStorage.getItem('id');
+const [idP, setIdP] = useState(storedId || 0);
+const[check,setCheck]=useState();
+const handlecheck=()=>{ 
+  if (idP===0){
+    setCheck(false);
+  }
+  else{
+    setCheck(true);
+  }
+}
 
 
 
@@ -70,6 +81,7 @@ const handleSubmit = async (e) => {
   
   
   useEffect(() => {
+    handlecheck();
     axios
       .get(selectedUsers)
       .then((response) => {
@@ -90,121 +102,127 @@ const handleSubmit = async (e) => {
   }, []);
 
   return (
-    <LayoutAdmin  >
-      <div  className="container">
-
-     
-      <div className='fix' style={{height:"100px"}}></div>
-    <div className='form'>
-      <div  style={{height:"100px"}}></div>
-      <form style={{  justifyContent:"center",textAlign:"center"}} onSubmit={handleSubmit}  >
-      <label >Name:</label>
-            <input type="text" required name="name" value={name} onChange={handleNameChange}  />
-            <br /> <br></br>
-      <label >Eamil:</label>
-            <input type="email" required name="email"  value={email} onChange={handelEmailChange}  />
-            <br /> <br></br>
-      <label >Password:</label>
-            <input type="text" name="password" value={password} required onChange={handelPasswordChange}  />
-            <br /> <br></br>
-
-            <label>Role:</label>
-
-
-            <select name="menuList" style={{width:"110px"}} value={role} required onChange={handelRoleChange}>
-            <option  value="">choose a Role</option>
-              {data.map((r)=>(
-                
-                  <option  value={r.id}>{r.role}</option>
-                  ))}
-                  </select>
+   <div>
+    {check ? (
+       <LayoutAdmin  >
+       <div  className="container">
+ 
       
-         <br /> <br></br>
-              
-
-         <button style={{padding:"8px" , borderRadius:"10px"}} type='submit'>submit</button>
-
-
-      </form>
-
-
-    </div>
-    
-   
+       <div className='fix' style={{height:"100px"}}></div>
+     <div className='formAcc'>
+       <div  style={{height:"100px"}}></div>
+       <form style={{  justifyContent:"center",textAlign:"center"}} onSubmit={handleSubmit}  >
+       <label >Name:</label>
+             <input type="text" required name="name" value={name} onChange={handleNameChange}  />
+             <br /> <br></br>
+       <label >Eamil:</label>
+             <input type="email" required name="email"  value={email} onChange={handelEmailChange}  />
+             <br /> <br></br>
+       <label >Password:</label>
+             <input type="text" name="password" value={password} required onChange={handelPasswordChange}  />
+             <br /> <br></br>
+ 
+             <label>Role:</label>
+ 
+ 
+             <select name="menuList" style={{width:"110px"}} value={role} required onChange={handelRoleChange}>
+             <option  value="">choose a Role</option>
+               {data.map((r)=>(
+                 
+                   <option  value={r.id}>{r.role}</option>
+                   ))}
+                   </select>
+       
+          <br /> <br></br>
                
-
-      <div  className='tabel-users'>
-        <h1 style={{color:"white"}}>users </h1>
-        <tabel className="borderedTable">
-         
-          <thead>
-    <tr>
-      <th>id</th>
-      <th>Name</th>
-      <th>Email</th>
-      <th>password</th>
-      <th>role</th>
-      <th>Edit</th>
-    </tr>
-  </thead>
-
-  <tbody>
-  {users.map((u) => (
-    <tr key={u.id}>
-      <td>
-        <p style={{ margin: 0, padding: '5px 10px', background: '#f0f0f0', borderRadius: '5px', display: 'inline-block', marginRight: '10px' }}>
-          {u.id}
-        </p>
-      </td>
-      <td>
-        <p style={{ margin: 0, padding: '5px 10px', background: '#f0f0f0', borderRadius: '5px', display: 'inline-block', marginRight: '10px' }}>
-          {u.name}
-        </p>
-      </td>
-      <td>
-        <p style={{ margin: 0, padding: '5px 10px', background: '#f0f0f0', borderRadius: '5px', display: 'inline-block', marginRight: '10px' }}>
-          {u.email}
-        </p>
-      </td>
-      <td>
-        <p style={{ margin: 0, padding: '5px 10px', background: '#f0f0f0', borderRadius: '5px', display: 'inline-block', marginRight: '10px' }}>
-          {u.password}
-        </p>
-      </td>
-      <td>
-        <p style={{ margin: 0, padding: '5px 10px', background: '#f0f0f0', borderRadius: '5px', display: 'inline-block', marginRight: '10px' }}>
-          {u.Role}
-        </p>
-      </td>
-      <td>
-        <button style={{padding:"8px",borderRadius:"30px"}}> Edit </button>
-      </td>
-
-
-      </tr>
-))}
-      </tbody>
-      
-      
-      
-      
-      
-      
-      
-      
-      
-         
-        </tabel>
-
-
-      </div>
+ 
+          <button style={{padding:"8px" , borderRadius:"10px"}} type='submit'>submit</button>
+ 
+ 
+       </form>
+ 
+ 
+     </div>
+     
+    
                 
-
-      </div>
-  
-
-
-    </LayoutAdmin>
+ 
+       <div  className='tabel-Acc'>
+         <h1 style={{color:"white"}}>users </h1>
+         <tabel className="borderedTable">
+          
+           <thead>
+     <tr>
+       <th>id</th>
+       <th>Name</th>
+       <th>Email</th>
+       <th>password</th>
+       <th>role</th>
+       <th>Edit</th>
+     </tr>
+   </thead>
+ 
+   <tbody>
+   {users.map((u) => (
+     <tr key={u.id}>
+       <td>
+         <p style={{ margin: 0, padding: '5px 10px', background: '#f0f0f0', borderRadius: '5px', display: 'inline-block', marginRight: '10px' }}>
+           {u.id}
+         </p>
+       </td>
+       <td>
+         <p style={{ margin: 0, padding: '5px 10px', background: '#f0f0f0', borderRadius: '5px', display: 'inline-block', marginRight: '10px' }}>
+           {u.name}
+         </p>
+       </td>
+       <td>
+         <p style={{ margin: 0, padding: '5px 10px', background: '#f0f0f0', borderRadius: '5px', display: 'inline-block', marginRight: '10px' }}>
+           {u.email}
+         </p>
+       </td>
+       <td>
+         <p style={{ margin: 0, padding: '5px 10px', background: '#f0f0f0', borderRadius: '5px', display: 'inline-block', marginRight: '10px' }}>
+           {u.password}
+         </p>
+       </td>
+       <td>
+         <p style={{ margin: 0, padding: '5px 10px', background: '#f0f0f0', borderRadius: '5px', display: 'inline-block', marginRight: '10px' }}>
+           {u.Role}
+         </p>
+       </td>
+       <td>
+         <button style={{padding:"8px",borderRadius:"30px"}}> Edit </button>
+       </td>
+ 
+ 
+       </tr>
+ ))}
+       </tbody>
+       
+       
+       
+       
+       
+       
+       
+       
+       
+          
+         </tabel>
+ 
+ 
+       </div>
+                 
+ 
+       </div>
+   
+ 
+ 
+     </LayoutAdmin>
+    ):(
+      <PageNotFound/>
+    )}
+   </div>
   )
 }
 

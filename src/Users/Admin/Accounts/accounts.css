@@ -1,7 +1,7 @@
 
 
 
-.form, .table-users {
+.formAcc, .table-Acc {
   display: flex;
   margin-left: 30%;
   flex-direction: column;

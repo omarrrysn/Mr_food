@@ -1,22 +1,36 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../Cashier/casher.css';
+import { useLocation, useNavigate } from 'react-router-dom';
+import './Casher.css';
 import axios from 'axios';
-import { OrderCasher, updateCasher } from '../../constants/API';
-function Casher() {
+import { OrderCashier, updateCashier } from '../../constants/API';
+import PageNotFound from '../../pages/Menu/PageNotFound';
+function Cashier() {
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const storedId=localStorage.getItem('id');
+  const [idP, setIdP] = useState(storedId || 44);
+  const[check,setCheck]=useState();
+  const [orderIdd,setOrderId]=useState();
+  const navigate = useNavigate();
 
+  const handlecheck=()=>{ 
+    if (idP===0){
+      setCheck(false);
+    }
+    else{
+      setCheck(true);
+    }
+  }
 
 
 
   useEffect(() => {
+    handlecheck();
     const login = async () => {
       setIsLoading(true);
       try {
-        await new Promise(resolve => setTimeout(resolve, 3000));
         setIsLoggedIn(true);
       } catch (error) {
         console.error('Login failed:', error);
@@ -30,15 +44,18 @@ function Casher() {
   }, []);
 
 
+  
 
   
 
+  
+  
   useEffect(() => {
     let isMounted = true;
   
     const fetchOrders = async () => {
       try {
-        const response = await axios.get(OrderCasher);
+        const response = await axios.get(OrderCashier);
   
         if (isMounted) {
           // console.log('Response data:', response.data)
@@ -72,25 +89,11 @@ function Casher() {
       }
     };
   
-    const longPoll = async () => {
-      try {
-        await fetchOrders(); 
-  
-        while (isMounted) {
-          await new Promise(resolve => setTimeout(resolve)); // Wait for 5 seconds before making the next request
-          await fetchOrders(); // Fetch orders again
-        }
-      } catch (error) {
-        console.error('Long poll error:', error);
-      }
-    };
-  
-    longPoll(); // Start long polling
-  
+   fetchOrders(); 
     return () => {
       isMounted = false; // Set isMounted to false to stop the long polling loop
     };
-  }, []);
+  }, [orders]);
   
   const changecolor = (recorded) => {
     if (recorded === 'Recorded') {
@@ -99,10 +102,19 @@ function Casher() {
       return 'red' ; 
     }
   }
+  const changeColorStatus =(status) => {
+    if (status === 'Cooking') {
+      return 'red'
+    }else if(status === "Ready"){
+      return 'green'
+    }else{
+      return 'blue'
+    }
+}
   
-  const handleRecordedChange = async (orderId) => {
+const handleRecordedChange = async (orderId) => {
     try {
-      await axios.post(updateCasher, [
+      await axios.post(updateCashier, [
         { OrderId: orderId, recorded: 'Recorded' }
       ]);
       const updatedOrders = orders.map(order => {
@@ -119,7 +131,7 @@ function Casher() {
   
   const handleNotRecordedChange = async (orderId) => {
     try {
-      await axios.post(updateCasher, [
+      await axios.post(updateCashier, [
         { OrderId: orderId, recorded: 'Not Recorded' }
       ]);
       const updatedOrders = orders.map(order => {
@@ -134,131 +146,138 @@ function Casher() {
     }
   };
 
-  const navigate = useNavigate();
 
 
   const handleNavigateHistory = () =>{
     navigate(`/CashierHistory`);
   }
+  const logoutCasher = () => {
+    window.localStorage.clear();
+    navigate('/LoginUsers');
+  };
 
-  
 
   return (
-    <>
-    <div style={{height:"20px"}}></div>
-      <div className='ContainerCashier'>
-        <div className='ContainerIconCashier'>
-         
-
-          <h1>Cashier</h1>  
-          <button style={{marginRight:"20px"}} onClick={handleNavigateHistory} >History</button>
-      
-          
+    <div>
+      {check ? (
+        <>
+        <div className='ContainerCasher'>
+          <div className='ContainerIconCasher'>
+            <h1>Casher</h1>  
+            <button className='ButtonLogOutCasher' onClick={logoutCasher}>Log Out</button>
+            <button onClick={handleNavigateHistory} >History</button>
+            
+          </div>
+          <div className='lineCasher'></div>
+          <p>Orders History</p>
+          <p className='p2'></p>
+          <div className='lineCasher'></div>
         </div>
-        <div className='lineCashier'></div>
-        <p>Orders</p>
-        <p className='p2'></p>
-        <div className='lineCashier'></div>
-      </div>
-      <div className='OrderContainerCashier'>
-      
-      {/* <div className='OrderCashier'>
-            <p> Order ID:  </p>
-          </div> */}
-                {isLoading ? (
-          <p>Loading orders...</p>
-        ) : error ? (
-          <p className="error">{error}</p>
-        ) : (
-          orders
-          .filter(order => order.recorded !== 'Recorded')
-          .sort((a, b) => new Date(b.date) - new Date(a.date))
-          .map(order => (
-            <div key={order.OrderId} className="OrderCashier">
-              <div className='OrderTableCashier'>
-                <table>
-                  <tbody>
-                    <tr>
-                      <td>Order ID:</td>
-                      <td>{order.OrderId}</td>
-                    </tr>
-                    <tr>
-                      <td>Table ID:</td>
-                      <td>{order.tableid}</td>
-                    </tr>
-                    <tr>
-                      <td>Date:</td>
-                      <td>{order.date}</td>
-                    </tr>
-                    <tr>
-                      <td>Time:</td>
-                      <td>{order.time}</td>
-                    </tr>
-
-                    <tr>
-                      <td>Status: </td>
-                      <td>{order.status}</td>
-                    </tr>
-                    <tr>
-                    <td>Quantity:</td>
-                    <td>{order.items.length}</td> 
-                  </tr>
-                  
-                  <tr >
-                    <td >Item Name: </td>
-                    <td >
-                      
-                    {order.items.map(item => (
-                      <tr key={item.itemName}>
-                        <td style={{margin:"50px"}}>Item Name:</td>
-                        <td>{item.itemName}</td>
-                        <td>Quantity:</td>
-                        <td >{item.quantity}</td>
-                      </tr>
-                    ))}
-                 
-                    </td>
-                  </tr>
-                  <tr>
-                      <td style={{fontWeight: "bold" , fontSize: "25px"}}>Total Price:</td>
-                      <td style={{ fontWeight: "bold", fontSize: "25px", color: changecolor(order.recorded) }}>{order.totalPrice}$ , {order.totalPrice   * 90000 + "" + " LB"} </td>
-                    </tr>
-                    <tr>
-                      <td style={{fontWeight: "bold"}}>Recorded: </td>
-                      <td style={{ fontWeight: "bold", fontSize: "25px", color: changecolor(order.recorded) }}>{order.recorded}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <div className='StatusCashier'>
-                <div className='StatusCashier1'>
-                  <p>Status</p>
-
-                </div>
-                <div className="checkbox-labelCashier">
-                <input
-                type="checkbox"
-                checked={(order.recorded === 'Not Recorded')}
-                onChange={() => handleNotRecordedChange(order.OrderId)}
-              />
-                  <p>Not Recorded</p>
-                </div>
-                <div className="checkbox-labelCashier">
-                <input
-                    type="checkbox"
-                    checked={(order.recorded === 'Recorded')}
-                    onChange={() => handleRecordedChange(order.OrderId)}
-                  />
-                  <p>Recorded</p>
-                </div>
-              </div>
+        <div className='OrderContainerCasher'>
+        
+        <div className='OrderCasher1'>
+              <p> Order ID:  </p>
             </div>
-          ))
-        )}
-       </div>
-    </>
+                  {isLoading ? (
+            <p>Loading orders...</p>
+          ) : error ? (
+            <p className="error">{error}</p>
+          ) : (
+            orders
+            .filter(order => order.recorded !== 'Recorded' )
+            .sort((a, b) => b.OrderId - a.OrderId)
+            .map(order => (
+              <div key={order.OrderId} className="OrderCasher">
+                <div className='OrderTableCasher'>
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>Order ID:</td>
+                        <td>{order.OrderId}</td>
+                      </tr>
+                      <tr>
+                        <td>Table ID:</td>
+                        <td>{order.tableid}</td>
+                      </tr>
+                      <tr>
+                        <td>Date:</td>
+                        <td>{order.date}</td>
+                      </tr>
+                      <tr>
+                        <td>Time:</td>
+                        <td>{order.time}</td>
+                      </tr>
+  
+                      <tr>
+                        <td>Status: </td>
+                        <td style={{color:changeColorStatus(order.status),  fontWeight: "bold", fontSize: "25px", }}>{order.status}</td>
+                      </tr>
+                      <tr>
+                      <td>Quantity:</td>
+                      <td>{order.items.length}</td> 
+                    </tr>
+                    
+                    <tr >
+                      <td >Item Name: </td>
+                      <td >
+                        
+                      {order.items
+                      .sort((a, b) => b.id - a.id)
+                      .map((item, index) => (
+                          <tr key={index}>
+                            <td style={{ margin: "50px" }}>Item Name:</td>
+                            <td>{item.itemName}</td>
+                            <td>Quantity:</td>
+                            <td>{item.quantity}</td>
+                          </tr>
+                        ))}
+                   
+                      </td>
+                    </tr>
+                    <tr>
+                        <td style={{fontWeight: "bold" , fontSize: "25px"}}>Total Price:</td>
+                        <td style={{ fontWeight: "bold", fontSize: "25px", color: changecolor(order.recorded) }}>{order.totalPrice}$ , {order.totalPrice   * 90000 + "" + " LB"} </td>
+                      </tr>
+                      <tr>
+                        <td style={{fontWeight: "bold"}}>Recorded: </td>
+                        <td style={{ fontWeight: "bold", fontSize: "25px", color: changecolor(order.recorded) }}>{order.recorded}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+  
+                <div className='StatusCasher'>
+                  <div className='StatusCasher1'>
+                    <p>Status</p>
+  
+                  </div>
+                  <div className="checkbox-labelCasher">
+                  <input
+                  type="checkbox"
+                  checked={(order.recorded === 'Not Recorded')}
+                  onChange={() => handleNotRecordedChange(order.OrderId)}
+                />
+                    <p>Not Recorded</p>
+                  </div>
+                  <div className="checkbox-labelCasher">
+                  <input
+                      type="checkbox"
+                      checked={(order.recorded === 'Recorded')}
+                      onChange={() =>{handleRecordedChange(order.OrderId); handleRecordedChange(order.OrderId)}}
+                    />
+                    <p>Recorded</p>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+         </div>
+      </>
+      ):(
+        <PageNotFound/>
+      )}
+    </div>
   );
 }
 
-export default Casher;
+export default Cashier;

@@ -35,7 +35,7 @@ const HeaderAdmin = () => {
       </Typography>
       <Divider />
 
-      <ul className="navigation-menu">
+      <ul className="mobile-navigation">
                 <li>
                   <Link to={"/Admin"}>Orders</Link>
                 </li>
@@ -51,7 +51,7 @@ const HeaderAdmin = () => {
                   <Link to={"/MenuAdmin"}>Menu</Link>
                 </li>
                 <li>
-                  <Link to={"/"}>logout</Link>
+                  <Link to={"/LoginUsers"}>logout</Link>
                 </li>
               </ul>
     </Box>
@@ -91,7 +91,7 @@ const HeaderAdmin = () => {
                   <Link to={"/MenuAdmin"}>Menu</Link>
                 </li>
                 <li>
-                  <Link to={"/"}>logout</Link>
+                  <Link to={"/LoginUsers"}>logout</Link>
                 </li>
               </ul>
             </Box>

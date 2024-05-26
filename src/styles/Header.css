@@ -7,14 +7,17 @@
     list-style: none;
     
   }
+  .mobile-navigation li, 
   .navigation-menu li{
     margin-left: 50px;   
-    
+    list-style: none;
   }
+  .mobile-navigation li a, 
   .navigation-menu li a{
     text-decoration: none;
     color: white; 
-  } 
+  }
+  .mobile-navigation li a:hover, 
   .navigation-menu li a:hover{
     color: goldenrod;
   }

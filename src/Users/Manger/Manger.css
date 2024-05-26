@@ -3,30 +3,71 @@
 .body{
     background-color: #000000;
 }
-.Container {
+.ContainerManger {
+
     width: 100%;
     height: 100px;
-    background-color: black;
+    background-color: rgb(0, 0, 0);
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
-    
+       
 }
-
-.Container .ContainerIcon h1 {
-    color: white;
-    padding-bottom: 50px;
-    margin-right: auto;
-    margin-left: 20px; 
-    display: flex;
-    align-items: center;
-    width: 0px;
+.ContainerManger .ContainerIconManger {
+  display: flex;
 }
-
-
-.Container p {  
-    color: white;
+.ContainerManger .ContainerIconManger .ButtonLogOutManger {
+  color: rgb(227, 0, 0);
+  margin-top: 60px;
+  margin-right: 12px;
+  margin-bottom: 2px;
+  padding-left: 8px;
+  position: absolute;
+  right: 0;
+  width: 100px;
+  height: 40px;
+  border-radius: 15px;
+  font-family: "Kaushan Script", cursive;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 25px;
+}
+.ContainerManger .ContainerIconManger h1 {
+ color:  rgb(245, 243, 243);
+  padding-bottom: 50px;
+  margin-right: auto;
+  margin-left: 20px; 
+  display: flex;
+  align-items: center;
+  width: 0px;
+  font-family: "Kaushan Script", cursive;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 40px;
+}
+  
+.ContainerManger .ContainerIconManger button{ 
+  color: rgb(0, 0, 0);
+  margin-top: 7px;
+  margin-right: 12px;
+  margin-bottom: 10px;
+  padding-left: 10px;
+  position: absolute;
+  right: 0;
+  display: flex;
+  align-items: center;  
+  background-color: #fffdfd;
+  width: 100px;
+  height: 40px;
+  border-radius: 15px;
+  background-color:rgb(241, 240, 240);
+  font-family: "Kaushan Script", cursive;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 25px;
+}
+.ContainerManger p {  
+    color: rgb(209, 15, 15);
     font-size: 30px;
     font-weight: bold;
     margin: 0;
@@ -37,7 +78,7 @@
 }
 
 
-.Container .p2 {
+.ContainerManger .p2 {
     color: aquamarine;
     margin-left: auto; 
     
@@ -45,33 +86,33 @@
 
 
 /* Line styles */
-.Container .line {
+.ContainerManger .lineManger {
     width: calc(100% - 40px);
     height: 2px;
     background: white;
     padding-top: 1px;
 }
 
-.Container .line:before,
-.Container .line:after {
+.ContainerManger .lineManger:before,
+.ContainerManger .lineManger:after {
     content: "";
     color: white;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
 }
-.OrderContainer {
+.OrderContainerManger {
     background-color: #000000;
     display: flex;
     flex: 0.7;
     flex-direction: column;
 
 }
-.Order {
+.OrderManger {
     width: 95%;
     display: block;
     height: 100%;
-    margin: -30px 40px 50px 25px ;
+    margin: 20px 40px 50px 25px ;
     padding-left:20px ;
     align-items: center;
     justify-content: center;
@@ -79,7 +120,7 @@
     background-color:#D9D9D9;
     border-radius: 25px;
 }
-.Order1 .Order  {
+.OrderManger1 .OrderManger  {
     width: 100px;
     height: 50px;
     border: 5px  transparent;
@@ -90,88 +131,116 @@
     border-radius: 25px;
     flex-direction: column;
 }
-.OrderTable {
+.OrderTableManger {
     width: 90%;
     margin-top: 40px; 
     border-collapse: collapse;
     margin-left: 50px;
   }
   
-  .OrderTable table {
+  .OrderTableManger table {
     width: 90%;
     border-collapse: collapse;
   }
   
-  .OrderTable tbody tr {
+  .OrderTableManger tbody tr {
     border: 2px solid #000000; 
     padding: 8px;
     text-align: center;
   }
   
   
-  .OrderTable tbody td {
+  .OrderTableManger tbody td {
     padding: 4px; 
   }
   
-  .OrderTable tbody td:first-child {
+  .OrderTableManger tbody td:first-child {
     font-weight: bold; 
     font-size: 20px;
   }
-  .OrderTable th, .OrderTable td {
+  .OrderTableManger th, .OrderTable td {
     border: 1px solid black; 
   }
-  .OrderTable tr:nth-child(even) {
+  .OrderTableManger tr:nth-child(even) {
     background-color: rgba(61, 60, 60, 0.161); 
   }
-  .OrderTable tr:nth-child(odd) {
+  .OrderTableManger tr:nth-child(odd) {
     background-color: #D9D9D9; 
   }
-  .OrderTable tr:hover{
+  .OrderTableManger tr:hover{
     background-color: #fafbff;
   }
+ 
 
 
 
-.Order .Status1 {
+.OrderManger .StatusMangerM1 {
     margin-top: 20px;
     width: 100px;
     height: 50px;
     border: 5px  transparent;
     border-color: #000000; 
     color: black;
-    background-color: #ad2828;
+    background-color: rgb(24, 92, 209);;
     text-align: center; 
     justify-content: center;
-    line-height: 3px;
+    /* line-height: 3px; */
     border-radius: 25px;
     font-size: 25px;
     font-weight: 550;
+    font-family: "Kaushan Script", cursive;
+    font-weight: 400;
+    font-style: normal;
+    margin: 20px;
 } 
-.Order .Button {
-    background-color: rgb(219, 195, 13);
-    margin-left: 100px;
+.OrderManger .ButtonManger {
+    background-color: rgb(209, 15, 15);;
     border-radius: 25px;
     width: 90px;
     height: 40px;
-    margin-left: 770px;
-    margin-top: 40px;
+    margin-left: 0px;
+    margin-top: 10px;
+    font-family: "Kaushan Script", cursive;
+    font-weight: 400;
+    font-style: normal;
 }
 
 
-.OrderDetails {
-    padding-right: 10px !important;  
+.OrderDetailsManger {
     max-width: 420px;
     
   }
+  .OrderManger .StatusManger {
+    display: flex; 
+    align-items: flex-start; 
+    width: 400px; 
+  }
+
+  .OrderManger .StatusManger .checkbox-labelManger {
+    padding-left: 25px;
+    padding-top: 25px;
+    display: flex; 
+    flex-direction: column; 
+    margin-right: 40px; 
+   transform: scale(1.5);
+  }
+  .OrderManger .StatusManger .checkbox-labelManger p {
+    font-size: 10px;
+    padding: 0px;
+    margin: 0px;
+  }
+  
+  .OrderManger .StatusManger .checkbox-labelManger input[type="checkbox"] {
+    margin-bottom: 2px; 
+  }
 
 
-
-@media (max-width: 600px) {
-    .Container {
+@media (max-width:  576px) {
+    .ContainerManger {
         
             width: 100%;
-            height: 160px;
-            background-color: black;
+            height: 100px;
+            background-color: rgb(0, 0, 0);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -181,21 +250,165 @@
       
         
     }
-    .Container .ContainerIcon h1 {
-        font-size: 38px;
-    }
-
-    .OrderContainer {
-       min-height: 220;
-       max-height: 280;
-       width: 92%;
-    }
-    body {
-        margin: 0px;
-        padding:0px;
-        background-color: #000000; 
+    .ContainerManger .lineManger {
+      width: calc(100% + 40px);
+      height: 2px;
+      background: white;
+      padding-top: 1px;
+  }
+    .OrderManger {
+      width: 100%;
+      display: block;
+      height: 100%;
+      margin-left: 3px;
+      margin-right: 3px;
+      /* margin: 14px 20px 10px 9px ; */
+      padding-left:10px ;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      background-color:#D9D9D9;
+      border-radius: 25px;
+  }
+  
+    .OrderTableManger {
+      width: 90%;
+      margin-top: 40px; 
+      border-collapse: collapse;
+      margin-left: 17px;
     }
     
+    .OrderTableManger table {
+      width: 10%;
+      border-collapse: collapse;
+
+    }
+    
+    .OrderTableManger tbody tr {
+      border: 2px solid #000000; 
+      padding: 8px;
+      text-align: center;
+    }
 
     
+    
+    .OrderTableManger tbody td {
+      padding: 4px; 
+    }
+    
+    .OrderTableManger tbody td:first-child {
+      font-weight: bold; 
+      font-size: 20px;
+    }
+    .OrderTableManger th, .OrderTable td {
+      border: 1px solid black; 
+    }
+    .OrderTableManger tr:nth-child(even) {
+      background-color: rgba(61, 60, 60, 0.161); 
+    }
+    .OrderTableManger tr:nth-child(odd) {
+      background-color: #D9D9D9; 
+    }
+    .OrderTableManger tr:hover{
+      background-color: #fafbff;
+    }
+    .OrderManger .ButtonManger {
+      background-color: rgb(219, 13, 13);
+      margin-left: 110px;
+      border-radius: 25px;
+      width: 90px;
+      height: 40px;
+      margin-left: 120px;
+      margin-top: 40px;
+  }
+
+    
+}
+@media (max-width: 768px ) {
+  .ContainerManger {
+      
+          width: 100%;
+          height: 100px;
+          background-color: rgb(0, 0, 0);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          overflow-x: hidden;
+          overflow-y: hidden; 
+    
+      
+  }
+  .ContainerManger .lineManger {
+    width: calc(100% + 40px);
+    height: 2px;
+    background: white;
+    padding-top: 1px;
+}
+  .OrderManger {
+    width: 100%;
+    display: block;
+    height: 100%;
+    margin-left: 3px;
+    margin-right: 3px;
+    /* margin: 14px 20px 10px 9px ; */
+    padding-left:10px ;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color:#D9D9D9;
+    border-radius: 25px;
+}
+
+  .OrderTableManger {
+    width: 90%;
+    margin-top: 40px; 
+    border-collapse: collapse;
+    margin-left: 17px;
+  }
+  
+  .OrderTableManger table {
+    width: 10%;
+    border-collapse: collapse;
+  }
+  
+  .OrderTableManger tbody tr {
+    border: 2px solid #000000; 
+    padding: 8px;
+    text-align: center;
+  }
+
+  
+  
+  .OrderTableManger tbody td {
+    padding: 4px; 
+  }
+  
+  .OrderTableManger tbody td:first-child {
+    font-weight: bold; 
+    font-size: 20px;
+  }
+  .OrderTableManger th, .OrderTable td {
+    border: 1px solid black; 
+  }
+  .OrderTableManger tr:nth-child(even) {
+    background-color: rgba(61, 60, 60, 0.161); 
+  }
+  .OrderTableManger tr:nth-child(odd) {
+    background-color: #D9D9D9; 
+  }
+  .OrderTableManger tr:hover{
+    background-color: #fafbff;
+  }
+  .OrderManger .ButtonManger {
+    background-color: rgb(219, 13, 13);
+    margin-left: 50px;
+    border-radius: 25px;
+    width: 90px;
+    height: 40px;
+    margin-left: 120px;
+    margin-top: 40px;
+}
+
+  
 }

@@ -1,0 +1,35 @@
+.mainlogo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.mainlogo {
+  max-width: 100%;
+  height: auto; /* Adjust height to auto for better scaling */
+}
+
+@keyframes beat {
+  0% {
+    transform: scale(1);
+  } 
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animation {
+  animation: beat 1s infinite;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+  .mainlogo {
+    max-width: 90%; /* Adjust for smaller screens */
+    margin-left: -45px;
+  }
+}

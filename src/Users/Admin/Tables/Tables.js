@@ -1,140 +1,174 @@
-import React, { useState , useEffect } from 'react'
-import LayoutAdmin from '../../../compounent/Admin/LayoutAdmin';
-import "./tables.css"
-import { insertTables , selectTables} from '../../../constants/API'
+import React, { useState, useEffect } from 'react';
+import "./tables.css";
 import axios from 'axios';
+import QRCodeTable from './QRCodeTable';import { insertTables, selectManger, selectTables } from '../../../constants/API';
+import LayoutAdmin from '../../../compounent/Admin/LayoutAdmin';
+import { QrCodeTable } from '../../../constants/API';
+import PageNotFound from '../../../pages/Menu/PageNotFound';
+import QRCode from 'qrcode.react';
+
 const Tables = () => {
-  const[table , setTable]=useState('');
-  const[password , setPassword]=useState('');
-  const [tables,setTables]=useState([]);
-  const handleNameChange=(e)=>{
+  const [table, setTable] = useState('');
+  const [password, setPassword] = useState('');
+  const [tables, setTables] = useState([]);
+  const [roles, setRoles] = useState([]);
+  const [role, setRole] = useState('');
+  const [accounts, setAccounts] = useState([]);
+  const storedId=localStorage.getItem('id');
+  const [idP, setIdP] = useState(storedId || 1);
+  const[check,setCheck]=useState();
+  const handlecheck=()=>{ 
+    if (idP===0){
+      setCheck(false);
+    }
+    else{
+      setCheck(true);
+    }
+  }
+  const fetchAccounts = async () => {
+    try {
+      const response = await axios.get(QrCodeTable);
+      console.log("Qr",response.data);
+      setAccounts(response.data); // Assuming response.data is an array of account objects
+    } catch (error) {
+      console.error('Error fetching accounts Qr :', error);
+    }
+  };
+
+  const handleRoleChange = (e) => {
+    setRole(e.target.value);
+  };
+
+  const handleNameChange = (e) => {
     setTable(e.target.value);
   };
-  const handelPasswordChange=(e)=>{
+
+  const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    const formData = new FormData();
-  
-    formData.append('table', table);
-    formData.append('password', password);
-  
-    try {
-        const response = await axios.post(insertTables, formData);
-        console.log(response.data.message);
-        setTable('');
-        setPassword('');
 
-        axios
-        .get(selectTables)
-        .then((response) => {
-          setTables(response.data);
-        })
-        .catch((error) => {
-          console.error("Error fetching elements:", error);
-        });
-        
-      } catch (error) {
-        console.error('Error:', error);
-      }
+    const data = {
+      name: table,
+      password: password,
+      mangerId: role
     };
 
-    useEffect(() => {
-      axios
-        .get(selectTables)
-        .then((response) => {
-          setTables(response.data);
-        })
-        .catch((error) => {
-          console.error("Error fetching users:", error);
-        });
-    
-    }, []);
+    try {
+      const response = await axios.post(insertTables, data, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      console.log(response.data.message);
+      setTable('');
+      setPassword('');
+      setRole('');
+
+      // Fetch tables again after submitting
+      fetchTables();
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const fetchTables = async () => {
+    try {
+      const response = await axios.get(selectTables);
+      setTables(response.data);
+    } catch (error) {
+      console.error('Error fetching tables:', error);
+    }
+  };
+
+  const fetchRoles = async () => {
+    try {
+      const response = await axios.get(selectManger);
+      console.log('Roles fetched:', response.data); 
+      setRoles(response.data);
+    } catch (error) {
+      console.error('Error fetching roles:', error);
+    }
+  };
+
+  useEffect(() => {
+    handlecheck();
+    fetchTables();
+    fetchRoles();
+    fetchAccounts(); // Fetch accounts when component mounts
+  }, []);
 
   return (
-    <LayoutAdmin>
-
-    <div  className="container">
-
-   
-    <div className='fix' style={{height:"100px"}}></div>
-  <div className='form'>
-    <div  style={{height:"100px"}}></div>
-    <form style={{  justifyContent:"center",textAlign:"center"}}  onSubmit={handleSubmit}>
-    <label >Name:</label>
-          <input type="text" required name="name" value={table} onChange={handleNameChange}  />
-         
-          <br /> <br></br>
-    <label >Password:</label>
-          <input type="text" name="password" value={password} onChange={handelPasswordChange}   />
-          
-
-          <br /> <br></br>
-             
-       <br /> <br></br>
-
-            
-
-       <button style={{padding:"8px" , borderRadius:"10px"}} type='submit'>submit</button>
-
-
-    </form>
-
-
-  </div>
-  
+   <div>
+    {check ? (
+       <LayoutAdmin>
+       <div className="containerTable">
+         <div className="fix"></div>
+         <div className="form-containerTable">
+           <div className="formTable">
+             <form onSubmit={handleSubmit}>
+               <label>Name:</label>
+               <input type="text" required name="name" value={table} onChange={handleNameChange} />
+               <label>Password:</label>
+               <input type="text" name="password" value={password} onChange={handlePasswordChange} />
+               <label>Role:</label>
+               <select name="menuList" value={role} required onChange={handleRoleChange}>
+                 <option value="">Choose a Manager</option>
+                 {roles.map((r) => (
+                   <option key={r.id} value={r.id}>{r.name}</option>
+                 ))}
+               </select>
+               <button type="submit">Submit</button>
+             </form>
+           </div>
+         </div>
  
-             
+         <div className="table-container">
+           <h1 style={{ color: "white",marginLeft:"100px" }}>Users</h1>
+           <table className="borderedTable">
+             <thead>
+               <tr>
+                 <th>Id</th>
+                 <th>Table</th>
+                 <th>Password</th>
+                 <th>Manager</th>
+                 <th>QR Code</th>
+               </tr>
+             </thead>
+             <tbody>
+               {tables.map((u) => (
+                 <tr key={u.id}>
+                   <td>
+                     <p>{u.id}</p>
+                   </td>
+                   <td>
+                     <p>{u.tableName}</p>
+                   </td>
+                   <td>
+                     <p>{u.password}</p>
+                   </td>
+                   <td>
+                     <p>{u.mangerName}</p>
+                   </td>
+                   <td>
+                   <QRCode 
+                    value={(`${u.URL}/Login?tableName=${encodeURIComponent(u.tableName)}&password=${encodeURIComponent(u.password)}`)} 
+                />
+                   </td>
+                 </tr>
+               ))}
+             </tbody>
+           </table>
+         </div>
+       </div>
+     </LayoutAdmin>
+    ):(
+      <PageNotFound/>
+    )}
+   </div>
+  );
+};
 
-    <div  className='tabel-users'>
-      <h1 style={{color:"white"}}>users </h1>
-      <tabel className="borderedTable">
-       
-        <thead>
-  <tr>
-    <th>id</th>
-    <th>Table</th>
-    <th>password</th>
-  </tr>
-</thead>
-
-<tbody>
-{tables.map((u) => (
-  <tr key={u.id}>
-    <td>
-      <p style={{ margin: 0, padding: '5px 10px', background: '#f0f0f0', borderRadius: '5px', display: 'inline-block', marginRight: '10px' }}>
-        {u.id}
-      </p>
-    </td>
-    <td>
-      <p style={{ margin: 0, padding: '5px 10px', background: '#f0f0f0', borderRadius: '5px', display: 'inline-block', marginRight: '10px' }}>
-        {u.tableName}
-      </p>
-    </td>
-    <td>
-      <p style={{ margin: 0, padding: '5px 10px', background: '#f0f0f0', borderRadius: '5px', display: 'inline-block', marginRight: '10px' }}>
-        {u.password}
-      </p>
-    </td>
- 
-    </tr>
-))}
-    </tbody>
-    
-      </tabel>
-
-    </div>
-              
-
-    </div>
-
-
-
-  </LayoutAdmin>
-  )
-}
-
-export default Tables
+export default Tables;

@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import "../../styles/Menu.css";
 import axios from "axios";
 import CloseIcon from '@mui/icons-material/Close';
-import { subItem , images ,insertOrderDetails ,insertMainOrder, selectOrderId, updateTotaleprice, selectOrderDetails} from "../../constants/API";
+import { subItem , images ,insertOrderDetails ,insertMainOrder, selectOrderId, updateTotaleprice, selectOrderDetails, updateCashier} from "../../constants/API";
 import { Box, Divider, Drawer, Typography } from "@mui/material";
 import { CircularProgress } from '@mui/material';
+import { useLocation, useNavigate } from "react-router-dom";
 
 
 
@@ -28,15 +29,14 @@ const ThirdMenu = ({ data,tbl,tm,dt }) => {
   const [orderLoading,setOrderLoading]=useState(false);
   const [totalOrderPrice,setTotalOrderPrice]=useState();
   const[number,setNumber]=useState(1);
-
-
- 
-
-
+ const [orderId,setOrderId]=useState();
+ const [orderIdStatus,setOrderIdsatatus]=useState();
+ const get=localStorage.getItem('Recorded' )
+const[testt,setTestt]=useState(get);
+const navigate=useNavigate();
 
 
   const handleAdd=(mainId,id, nm,pr,chf,num  )=>{
-   console.log(mainId);
     if (num > 0) {
       setOrder((prevOrder) => ({
         ...prevOrder,
@@ -108,10 +108,24 @@ const ThirdMenu = ({ data,tbl,tm,dt }) => {
     }
   };
 
+  const fetchOrderId = async () => {
+    const formData = new FormData();
+    formData.append('tableid', tblId);
+    formData.append('date', date);
+    formData.append('time', hours);
+    try {
+        const response = await axios.post(selectOrderId, formData);
 
-
-
-
+        if (response.data.status === 'success') {
+            setOrderId(response.data.orderId);
+            setOrderIdsatatus(response.data.recorded);
+        } else {
+            console.error('Error:', response.data.message);
+        }
+    } catch (error) {
+        console.error('Axios error:', error);
+    }
+};
 
 
 const handleOrderDetails = async (e) => {
@@ -126,7 +140,6 @@ const handleOrderDetails = async (e) => {
       const response = await axios.post(selectOrderDetails, formData);
   
       const data = response.data;
-      
       
       setOrderDetaials(data.orderDetails);
       getTotalPrice();
@@ -144,6 +157,9 @@ const handleOrderDetails = async (e) => {
 
 // Create the main order 
   const handleSubmit = async (e) => {
+    fetchOrderId();
+    fetchOrderId();
+    console.log(orderIdStatus);
 handler();
 if(mainorder+1==1){
   e.preventDefault();
@@ -158,7 +174,6 @@ if(mainorder+1==1){
   try {
       const response =await axios.post(insertMainOrder, formData);
       console.log(response.data.message);
-      
      
   } catch (error) {
       console.error('Error:', error);
@@ -168,8 +183,29 @@ if(mainorder+1==1){
     
 };
 
+const handleRecordedChange = async (orderId) => {
+  try {
+    const response = await axios.post(updateCashier, [
+      { OrderId: orderId }
+    ]);
+    const status = response.data.status;
+    if (status === 'success selection') {
+      setOrderIdsatatus(response.data.recorded);
+    }
+  } catch (error) {
+    console.error('Error updating recorded status:', error);
+  }
+};
+
+
+
+
+
+
+
 // insert the Order details 
   const handleInsert = () => {
+    handleRecordedChange(orderId);
       setOrderLoading(true);
       const formData = new FormData();
       formData.append('tableid', tblId);
@@ -221,10 +257,13 @@ if(mainorder+1==1){
 
 
 
-  
-
- 
   useEffect(() => {
+
+if(orderIdStatus == 'Recorded'){
+  alert("Your Order has ended if you want a new order please scan again the QR code on your Table")
+  navigate('/');
+}
+
       axios
       .get(
         ` ${subItem} ${id}`
@@ -237,7 +276,7 @@ if(mainorder+1==1){
       .catch((error) => {
         console.error("Error fetching elements:", error);
       });
-    }, [id]);
+    }, [id,orderIdStatus]);
     
   
   
@@ -364,7 +403,7 @@ style={{border:"none",outline:"none", padding:"7px",fontSize:"10px"}}
             </Typography>
 <Divider />
     <div>
-    <table className="borderedTable">
+    <table className="borderedTableMenu">
     <thead>
     <tr>
     <th>Name</th>
@@ -475,7 +514,8 @@ style={{border:"none",outline:"none", padding:"7px",fontSize:"10px"}}
 {/* Button to Open the Order Details */}
         <div className="placeOrder">
 
-              <button className="btn"  onClick={handleSubmit}  > placeOrder    </button>
+              <button className="btn"  onClick={handleSubmit}  > placeOrder </button>
+           
         </div>
 
        

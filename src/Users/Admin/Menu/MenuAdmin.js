@@ -5,6 +5,7 @@ import "../../../styles/Menu.css";
 import axios from "axios";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { insertMainMenu,mainMenu } from "../../../constants/API";
+import PageNotFound from "../../../pages/Menu/PageNotFound";
 function MenuAdmin() {
   const [sec, setSec] = useState();
   const [data, setData] = useState([]);
@@ -12,6 +13,17 @@ function MenuAdmin() {
   const [name, setName] = useState('');
   const [reload,setReload]=useState(true);
  
+const storedId=localStorage.getItem('id');
+const [idP, setIdP] = useState(storedId || 0);
+const[check,setCheck]=useState();
+const handlecheck=()=>{ 
+  if (idP===0){
+    setCheck(false);
+  }
+  else{
+    setCheck(true);
+  }
+}
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -45,57 +57,65 @@ function MenuAdmin() {
   };
 
   useEffect(() => {
+    handlecheck();
     fetchData();
   }, []);
 
   return (
-    <LayoutAdmin>
-      <div style={{ height: 50 }}></div>
-      <div className="firstList">
+    <div>
+ {check?(
+     <LayoutAdmin>
+     <div style={{ height: 50 }}></div>
+     
+     <div className="firstList">
 
 
-        {data.map((item) => (
-          <div key={item.id} style={{textAlign:"center"}}>
-            <h2
-              onClick={() => setSec(item.id)}
-              style={{
-                color: sec === item.id ? "red" : "black",
-                cursor: "pointer",
-              }}
-            >
-              {item.firstList}
-            </h2>
+       {data.map((item) => (
+         <div key={item.id} style={{textAlign:"center"}}>
+           <h2
+             onClick={() => setSec(item.id)}
+             style={{
+               color: sec === item.id ? "red" : "black",
+               cursor: "pointer",
+             }}
+           >
+             {item.firstList}
+           </h2>
 
-       
-            
+      
+           
 
-          </div>
-        ))}
-        <div style={{width:"20px"}}></div>
-        <div className="add">
-        {add === false ? <AddCircleOutlineIcon style={{cursor:"pointer"}} onClick={() => setAdd(true)} /> :
-         
-         <form onSubmit={handleSubmit}>
-         <input
-         name="firstList"
-           type="text"
-           placeholder="Enter a list"
-           value={name}
-           onChange={(e) => setName(e.target.value)}
-           required
-         />
+         </div>
+       ))}
+       <div style={{width:"20px"}}></div>
+       <div className="add">
+       {add === false ? <AddCircleOutlineIcon style={{cursor:"pointer"}} onClick={() => setAdd(true)} /> :
+        
+        <form onSubmit={handleSubmit}>
+        <input
+        name="firstList"
+          type="text"
+          placeholder="Enter a list"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
 
 <button style={{background:"transparent", border:"none",cursor:"pointer"}} type="submit"><AddCircleOutlineIcon /></button>
 
-        
-       </form>
+       
+      </form>
 
-         }
+        }
 
-        </div>
-      </div>
-      {sec && <SecondMenu idd={sec} />}
-    </LayoutAdmin>
+       </div>
+     </div>
+     {sec && <SecondMenu idd={sec} />}
+   </LayoutAdmin>
+ ):(
+  <PageNotFound/>
+ )}
+    </div>
   );
 }
 

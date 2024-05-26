@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./Login.css"
-import { LoginUser } from '../../constants/API';
+import {LoginUser} from '../../constants/API';
+import { CircularProgress } from '@mui/material';
 const LoginUsers = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const [loading, setLoading]=useState(false);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -19,8 +21,14 @@ const LoginUsers = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError('');
+    setTimeout(() => {
+      setLoading(false); 
+      setError('An error occurred. Please try again.');
+    }, 30000);
     try {
-      const response = await fetch( LoginUser, {
+      const response = await fetch(LoginUser, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -28,27 +36,25 @@ const LoginUsers = () => {
         body: JSON.stringify({ email, password }),
       });
       const data = await response.json();
+      setLoading(false);
       if (response.ok) {
         const { role, id, name } = data;
+
+        localStorage.setItem('id', id);
         if (role === 100) {      
-          setTimeout(() => {
-            navigate(`/Admin`, { state: { id, name, role } });
-          }, 3000); // Delay for 3 seconds
+            navigate(`/Admin`);
           console.log({ id, name, role });
         } else if (role === 200) {
-          setTimeout(() => {
-            navigate(`/Chef`, { state: { id, name, role } });
-          }, 3000); // Delay for 3 seconds
+          navigate(`/Chef`);
+          
           console.log({ id, name, role });
         } else if (role === 300) {
-          setTimeout(() => {
-            navigate(`/Manger`, { state: { id, name, role } });
-          }, 3000); // Delay for 3 seconds
+          navigate(`/Manger`);
+          
           console.log({ id, name, role });
         } else if (role ===400){
-          setTimeout(() => {
-            navigate(`/Cashier`, { state: { id, name, role } });
-          }, 3000); // Delay for 3 seconds
+        
+            navigate(`/Cashier`);
           console.log({ id, name, role });
         }else {
           setError('Unknown role');
@@ -57,12 +63,13 @@ const LoginUsers = () => {
         setError(data.error || 'Something went wrong.');
       }
     } catch (error) {
-      console.error('Error:', error);
-      setError('An error occurred. Please try again.');
+      console.error('Error:', error);;
     }
   };
   
-  
+  useEffect(() => {
+    localStorage.removeItem('id');
+  }, []);
   
   
   return (
@@ -92,7 +99,15 @@ const LoginUsers = () => {
           />
         </div>
         <button type="submit" className="login-btn">Login</button>
-        {error && <p className="error">{error}</p>}
+        {loading && (
+      <div className="reload">
+        <h2 style={{ marginLeft: "20px" }}>
+          Loading...
+          <CircularProgress style={{ marginLeft: "15px" }} className="reload-icon" />
+        </h2>
+      </div>
+    )}
+        {error && <p  className="error" style={{color:"white"}}>{error}</p>}
       </form>
     </div>
   );
