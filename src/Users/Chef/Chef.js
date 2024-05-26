@@ -83,6 +83,7 @@ function Chef() {
       await axios.post(updateChef, {
         OrderId: orderId,
         status: status,
+        chefId:id
       });
       setOrders(prevOrders => 
         prevOrders.map(order => 

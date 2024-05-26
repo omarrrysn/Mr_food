@@ -34,7 +34,7 @@ const ThirdMenu = ({ data,tbl,tm,dt }) => {
  const get=localStorage.getItem('Recorded' )
 const[testt,setTestt]=useState(get);
 const navigate=useNavigate();
-
+const [isorder,setisOrder]=useState(false);
 
   const handleAdd=(mainId,id, nm,pr,chf,num  )=>{
     if (num > 0) {
@@ -153,13 +153,23 @@ const handleOrderDetails = async (e) => {
 
 
 
+  const orderexist =()=>{
+    if(selectedIds.length!==0){
+      setisOrder(true);
 
+    }
+    else{
+      setisOrder(false);
+
+    }
+  }
 
 // Create the main order 
   const handleSubmit = async (e) => {
+    orderexist();
     fetchOrderId();
     fetchOrderId();
-    console.log(orderIdStatus);
+
 handler();
 if(mainorder+1==1){
   e.preventDefault();
@@ -205,6 +215,7 @@ const handleRecordedChange = async (orderId) => {
 
 // insert the Order details 
   const handleInsert = () => {
+    orderexist();
     handleRecordedChange(orderId);
       setOrderLoading(true);
       const formData = new FormData();
@@ -313,29 +324,27 @@ if(orderIdStatus == 'Recorded'){
           
         >
           <Box sx={{ textAlign: "center" }}>
-            <Typography color={"goldenrod"} variant={"h6"} component={"div"} sx={{ flexGrow: 1.5 }}>
+            <Typography color={"goldenrod"} variant={"h6"} component={"div"} sx={{ flexGrow: 1.5 }} style={{display:"flex",justifyContent:"space-between"}}>
               Order Details: {orderLoading && (
                 <div>
                   Loading... <CircularProgress style={{marginLeft:"15px"}}  className="reload-icon" />
 
                 </div>
               )}
+              <CloseIcon onClick={()=>setOpen(false)}  style={{fontSize:"40px"}} />
             </Typography>
             <Divider />
-                
-                  <div className="orderDetails" style={{display:"block"}}  >
+                  {isorder && (
+                    <>
+                      <div className="orderDetails" style={{display:"block"}}  >
 
-<div className="orderHeader">
-<h3>Selected Items:</h3>
-<div>
-
-<CloseIcon onClick={()=>setOpen(false)}  style={{fontSize:"40px"}} />
-</div>
+<div className="orderHeader" style={{display:"flex" , justifyContent:"center",padding:"5px"}}>
+<h3>Selected Items: {selectedIds.length}</h3>
 </div>
 <div>
 
 {/* table of Order Details */}
-<table className="borderedTable">
+<table  className="borderedTableMenu">
 <thead>
 <tr>
 <th>Name</th>
@@ -364,7 +373,7 @@ if(orderIdStatus == 'Recorded'){
 </p>
 </td>
 
-<td>
+<td >
 <input
 type="text"
 value={notes[Id] || ''}
@@ -372,10 +381,10 @@ onChange={(e) => {
 const newNotes = { ...notes, [Id]: e.target.value };
 setNotes(newNotes);
 }}
-style={{border:"none",outline:"none", padding:"7px",fontSize:"10px"}}
+style={{border:"none",outline:"none", padding:"auto",fontSize:"15px",width:"100%"}}
 />
 </td>
-
+ 
 </tr>
 ))}
 <tr>
@@ -390,19 +399,24 @@ style={{border:"none",outline:"none", padding:"7px",fontSize:"10px"}}
 
 </table>
 <br></br>
-<div>
+<div style={{padding:"10px"}}>
 <button onClick={handleInsert}  style={{background:"rgb(236, 37, 37)",borderRadius:"20px" , padding:"10px"}}  >Confirm </button>
 </div>
 
 </div>
 </div>
+                    
+                    
+                    </>
+                  )}
+                
 {/* Order Details */}
 <Divider />
 <Typography color={"goldenrod"} variant={"h6"} component={"div"} sx={{ flexGrow: 1.5 }}>
             Your Order Details: 
             </Typography>
 <Divider />
-    <div>
+    <div className="secTable">
     <table className="borderedTableMenu">
     <thead>
     <tr>

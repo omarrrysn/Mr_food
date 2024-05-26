@@ -83,8 +83,13 @@ function ChefHistory() {
       await axios.post(updateChef, {
         OrderId: orderId,
         status: status,
+        chefId:id
       });
-      fetchOrders(id);
+      setOrders(prevOrders => 
+        prevOrders.map(order => 
+          order.orderId === orderId ? { ...order, items: order.items.map(item => ({ ...item, status })) } : order
+        )
+      );
     } catch (error) {
       console.error(`Error updating ${status} status for orderId ${orderId}:`, error);
     }

@@ -9,7 +9,7 @@ import PageNotFound from './PageNotFound';
 
 function Menu() {
   const storedTableId = localStorage.getItem('tableId');
-  const [tableId1, setTableId] = useState(storedTableId || 23);
+  const [tableId1, setTableId] = useState(storedTableId || 0);
   const [sec, setSec] = useState(null);
   const [data, setData] = useState([]);
 const [reload,setReload]=useState(true);

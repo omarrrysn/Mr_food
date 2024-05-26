@@ -97,11 +97,14 @@ body{
   font-size: 25px;
   
 }
-
+.secTable{
+  background-color: white;
+padding: 15px;
+}
 .orderDetails{
 margin-top: 10px;
   width: auto;
-  height: 100%;
+  height: auto;
   background-color: white;
    display: none;
   overflow:auto;
@@ -120,19 +123,57 @@ margin-top: 10px;
 
 
 
-.borderedTable {
+.borderedTableMenu {
   border-collapse: collapse;
-  width: 100%;
+
+  width: 80%;
+  table-layout: fixed;
+  margin-left: 5%;
+  margin-right: 5%;
+  background-color:white; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
 }
 
-.borderedTable th, .borderedTable td {
-  border: 1px solid black;
-  padding: 8px;
+.borderedTableMenu th, .borderedTableMenu td {
+  border: 2px solid #000000; 
+  padding: 5px;
   text-align: left;
+  font-weight: 700;
 }
 
-.borderedTable th {
-  background-color: #f2f2f2;
+.borderedTableMenu th {
+  background-color: #fefefe; 
+  color: rgb(0, 0, 0); 
+}
+
+.borderedTableMenu tr td{
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.borderedTableMenu  td th{
+  max-height: 4em; /* Adjust to limit to 4 lines */
+  overflow:hidden;
+  max-width: 80px;
+}
+
+.borderedTableMenu tr td p {
+  margin: 0;
+  padding: 2PX;
+  border-radius: 5px;
+  display: inline-block;
+  width: auto;
+  display: flex;
+  justify-content: center;
+  
+}
+
+.table-container {
+  margin: 20px auto;
+  width: 90%;
+
+
 }
 .reload{
   color: white;
