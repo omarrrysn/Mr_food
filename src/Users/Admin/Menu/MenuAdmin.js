@@ -14,7 +14,7 @@ function MenuAdmin() {
   const [reload,setReload]=useState(true);
  
 const storedId=localStorage.getItem('id');
-const [idP, setIdP] = useState(storedId || 0);
+const [idP, setIdP] = useState(storedId || 1);
 const[check,setCheck]=useState();
 const handlecheck=()=>{ 
   if (idP===0){

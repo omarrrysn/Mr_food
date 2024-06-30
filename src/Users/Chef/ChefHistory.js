@@ -135,6 +135,7 @@ function ChefHistory() {
             <p className="error">{error}</p>
           ) : (
             orders
+            .sort((a, b) => a.orderId - b.orderId)
             .map((order, index) => (
               <div key={index} className="orderchef">
                 <div className='OrderCheff1'>

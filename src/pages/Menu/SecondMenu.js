@@ -4,7 +4,7 @@ import "../../styles/Menu.css";
 import axios from "axios";
 import { secondList , images } from "../../constants/API";
 const SecondMenu = ({ idd , tableid ,time , date}) => {
-  const [third, setThird] = useState(null);
+  const [third, setThird] = useState(120);
   const [elements, setElements] = useState([]);
   const id = idd;
 
@@ -23,6 +23,7 @@ const SecondMenu = ({ idd , tableid ,time , date}) => {
   return (
     <div>
       <div className="secondList">
+    
         {elements.map((item) => (
           <div className="secItems" key={item.id}>
             
@@ -37,11 +38,11 @@ const SecondMenu = ({ idd , tableid ,time , date}) => {
                     : "4px solid rgba(0, 0, 0, 0.448)  ",
                 cursor: "pointer",
               }}
-              onClick={() => setThird(item)}
+              onClick={() => setThird(item.id)}
             />
             <h3
               style={{
-                color: third === item ? "goldenrod" : "#F4F5A6",
+                color: third === item.id ? "goldenrod" : "#F4F5A6",
                 cursor: "pointer",
               }}
             >
@@ -50,7 +51,7 @@ const SecondMenu = ({ idd , tableid ,time , date}) => {
           </div>
         ))}
       </div>
-      {third && <ThirdMenu data={third.id} tbl={tableid} tm={time} dt={date}/>}
+      {third && <ThirdMenu data={third} tbl={tableid} tm={time} dt={date}/>}
     </div>
   );
 };

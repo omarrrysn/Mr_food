@@ -49,6 +49,7 @@ function Cashier() {
 
 
   const fetchOrders = async () => {
+    
 
     try {
         const response = await axios.get(`${orderManger}${idP}`);
@@ -73,7 +74,6 @@ function Cashier() {
                 console.error('Invalid data format:', response.data);
                 setError('Invalid data format');
             }
-        
     } catch (error) {
         console.error('Error fetching orders:', error);
     
@@ -156,9 +156,9 @@ const handleRecordedChange = async (orderId) => {
         <>
         <div className='ContainerCasher'>
           <div className='ContainerIconCasher'>
-            <h1>Manger</h1>  
-            <button className='ButtonLogOutCasher' onClick={logoutCasher}>Log Out</button>
-            <button onClick={handleNavigateHistory} >History</button>
+            <h1>Manager</h1>  
+            <button onClick={logoutCasher}  >Log Out</button>
+            <button className='ButtonLogOutCasher' onClick={handleNavigateHistory}>History</button>
             
           </div>
           <div className='lineCasher'></div>
@@ -178,7 +178,7 @@ const handleRecordedChange = async (orderId) => {
           ) : (
             orders
             .filter(order => order.recorded !== 'Recorded' )
-            .sort((a, b) => b.OrderId - a.OrderId)
+            .sort((a, b) => a.OrderId - b.OrderId)
             .map(order => (
               <div key={order.OrderId} className="OrderCasher">
                 <div className='OrderTableCasher'>

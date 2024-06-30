@@ -161,7 +161,7 @@ function CashierHistory() {
         <>
         <div className='ContainerCasher'>
           <div className='ContainerIconCasher'>
-            <h1>Casher  </h1>  
+            <h1>Cashier  </h1>  
             <button onClick={handleNavigateHistory} >Back</button>
             
           </div>
@@ -173,7 +173,7 @@ function CashierHistory() {
         <div className='OrderContainerCasher'>
         
         <div className='OrderCasher1'>
-              <p> Order ID:  </p>
+              
             </div>
                   {isLoading ? (
             <p>Loading orders...</p>
@@ -182,7 +182,7 @@ function CashierHistory() {
           ) : (
             orders
             .filter(order => order.recorded !== 'Not Recorded')
-            .sort((a, b) => b.OrderId - a.OrderId)      
+            .sort((a, b) => a.OrderId - b.OrderId)      
             .map(order => (
               <div key={order.OrderId} className="OrderCasher">
                 <div className='OrderTableCasher'>

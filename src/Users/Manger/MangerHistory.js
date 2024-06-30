@@ -10,7 +10,7 @@ function MangerHistory() {
   const [error, setError] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const id = localStorage.getItem('id');
-  //  const id = 45;
+
 
    useEffect(() => {
     const login = async () => {
@@ -147,7 +147,7 @@ function MangerHistory() {
     <>
       <div className='ContainerManger'>
         <div className='ContainerIconManger'>
-          <h1>Manger </h1>  
+          <h1>Manager </h1>  
           <button onClick={handleNavigateHistory} >Back</button>
           
         </div>
@@ -159,7 +159,7 @@ function MangerHistory() {
       <div className='OrderContainerManger'>
       
       <div className='OrderManger1'>
-            <p> Order ID:  </p>
+           
           </div>
                 {isLoading ? (
           <p>Loading orders...</p>
@@ -167,7 +167,7 @@ function MangerHistory() {
           <p className="error">{error}</p>
         ) : (
           orders
-          .sort((a, b) => b.OrderId - a.OrderId)
+          .sort((a, b) => a.OrderId - b.OrderId)
           // .filter(o => o.recorded === '' )
           .map(order => (
             <div key={order.OrderId} className="OrderManger">

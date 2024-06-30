@@ -9,8 +9,8 @@ import PageNotFound from './PageNotFound';
 
 function Menu() {
   const storedTableId = localStorage.getItem('tableId');
-  const [tableId1, setTableId] = useState(storedTableId || 0);
-  const [sec, setSec] = useState(null);
+  const [tableId1, setTableId] = useState(storedTableId || 23);
+  const [sec, setSec] = useState(23);
   const [data, setData] = useState([]);
 const [reload,setReload]=useState(true);
 const [hours, sethours]=useState();
@@ -83,9 +83,9 @@ setDate(formattedDate);
       {data.map((item) => (
         <div key={item.id}>
           <h2
-            onClick={() => setSec(item)}
+            onClick={() => setSec(item.id)}
             style={{
-              color: sec === item ? "red" : "black",
+              color: sec === item.id  ? "red" : "black",
               cursor: "pointer",
             }}
           >
@@ -95,7 +95,7 @@ setDate(formattedDate);
       ))}
     </div>
     
-    {sec && <SecondMenu idd={sec.id} tableid={tableId1} time={h} date={d} />}
+    {sec && <SecondMenu idd={sec} tableid={tableId1} time={h} date={d} />}
   </Layout>
 ) : (
   <PageNotFound />

@@ -38,7 +38,7 @@ const ThirdMenu = ({ data,tbl,tm,dt }) => {
         }}
        
       >
-        <h3>Menu</h3>
+        <h3 style={{color:"black"}}>Menu</h3>
       </div>
       <div className="thirdItems">
         {elements.map((subItem) => (

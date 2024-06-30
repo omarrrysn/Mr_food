@@ -105,22 +105,22 @@ const handleSubmit = async (e) => {
    <div>
     {check ? (
        <LayoutAdmin  >
-       <div  className="container">
+       <div  className="containerTable">
  
       
        <div className='fix' style={{height:"100px"}}></div>
-     <div className='formAcc'>
-       <div  style={{height:"100px"}}></div>
-       <form style={{  justifyContent:"center",textAlign:"center"}} onSubmit={handleSubmit}  >
+       <div className='form-containerTable'>
+     <div className='formTableA'>
+       <form  onSubmit={handleSubmit}  >
        <label >Name:</label>
              <input type="text" required name="name" value={name} onChange={handleNameChange}  />
-             <br /> <br></br>
+         
        <label >Eamil:</label>
-             <input type="email" required name="email"  value={email} onChange={handelEmailChange}  />
-             <br /> <br></br>
+             <input style={{width:"100%",padding:"15px"}} type="email" required name="email"  value={email} onChange={handelEmailChange}  />
+         
        <label >Password:</label>
              <input type="text" name="password" value={password} required onChange={handelPasswordChange}  />
-             <br /> <br></br>
+          
  
              <label>Role:</label>
  
@@ -143,12 +143,12 @@ const handleSubmit = async (e) => {
  
  
      </div>
-     
+     </div>
     
                 
  
-       <div  className='tabel-Acc'>
-         <h1 style={{color:"white"}}>users </h1>
+       <div  className='table-container'>
+         <h1 style={{ color: "white",marginLeft:"100px" }}>users </h1>
          <tabel className="borderedTable">
           
            <thead>

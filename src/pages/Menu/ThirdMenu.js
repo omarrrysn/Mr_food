@@ -22,8 +22,6 @@ const ThirdMenu = ({ data,tbl,tm,dt }) => {
   const [notes,setNotes]=useState([]);
   const id = data;
   const[orderDetails,setOrderDetaials]=useState([]);
-  const [hours, sethours]=useState(`${tm}`);
-  const [date, setDate] = useState(`${dt}`);
   const [mainorder,setMainOrder]=useState(0);
   const tblId=tbl;
   const [orderLoading,setOrderLoading]=useState(false);
@@ -35,7 +33,9 @@ const ThirdMenu = ({ data,tbl,tm,dt }) => {
 const[testt,setTestt]=useState(get);
 const navigate=useNavigate();
 const [isorder,setisOrder]=useState(false);
-
+const [status , setStatus]=useState();
+const [color,setcolor]=useState("white");
+const [checkStatus,setStatusCheck]=useState(false); 
   const handleAdd=(mainId,id, nm,pr,chf,num  )=>{
     if (num > 0) {
       setOrder((prevOrder) => ({
@@ -95,8 +95,8 @@ const [isorder,setisOrder]=useState(false);
   const getTotalPrice = async () => {
     const formData = new FormData();
     formData.append('tableid', tblId);
-    formData.append('date', date);
-    formData.append('time', hours);
+    formData.append('date', dt);
+    formData.append('time', tm);
     try {
       const response = await axios.post(updateTotaleprice, formData);
       const { message, totalPrice2 } = response.data;
@@ -111,14 +111,18 @@ const [isorder,setisOrder]=useState(false);
   const fetchOrderId = async () => {
     const formData = new FormData();
     formData.append('tableid', tblId);
-    formData.append('date', date);
-    formData.append('time', hours);
+    formData.append('date', dt);
+    formData.append('time', tm);
     try {
         const response = await axios.post(selectOrderId, formData);
 
         if (response.data.status === 'success') {
             setOrderId(response.data.orderId);
             setOrderIdsatatus(response.data.recorded);
+            // setStatus(response.data.statuss);
+            
+            
+            console.log(orderId)
         } else {
             console.error('Error:', response.data.message);
         }
@@ -127,13 +131,25 @@ const [isorder,setisOrder]=useState(false);
     }
 };
 
+const changeColorStatus=(status)=>{
+  if(status=="not ready"){
+    return"red";
+  }
+  else if(status == "Cooking"){
+    return"yellow";
+  }
+  else{
+   return "green";
+  }
+}
+
 
 const handleOrderDetails = async (e) => {
    
     const formData = new FormData();
     formData.append('tableid', tblId);
-    formData.append('date', date);
-    formData.append('time', hours);
+    formData.append('date', dt);
+    formData.append('time', tm);
   
   
     try {
@@ -142,6 +158,8 @@ const handleOrderDetails = async (e) => {
       const data = response.data;
       
       setOrderDetaials(data.orderDetails);
+      setStatus(data.status);
+      setisOrder(true);
       getTotalPrice();
   } catch (error) {
       console.error('Error:', error);
@@ -151,33 +169,59 @@ const handleOrderDetails = async (e) => {
       
   };
 
-
+const handleStatus = () => {
+if(orderDetails.length == 0){
+  setStatusCheck(false);
+}
+else{
+  setStatusCheck(true);
+}
+}
 
   const orderexist =()=>{
-    if(selectedIds.length!==0){
-      setisOrder(true);
-
-    }
-    else{
+    if(selectedIds.length==0){
       setisOrder(false);
 
     }
+    else{
+      setisOrder(true);
+
+    }
   }
+  // const handleRecordedChange = async (orderId) => {
+  //   try {
+  //     const response = await axios.post(updateCashier, [
+  //       { OrderId: orderId }
+  //     ]);
+  //     const status = response.data.status;
+  //     if (status === 'success selection') {
+  //       setStatus(response.data.statuss);
+  //       setOrderIdsatatus(response.data.recorded);
+  //       console.log("handle reco" , orderId)
+  //     }
+  //   } catch (error) {
+  //     console.error('Error updating recorded status:', error);
+  //   }
+  // };
+
+
+
+
 
 // Create the main order 
   const handleSubmit = async (e) => {
+    handleStatus();
     orderexist();
     fetchOrderId();
     fetchOrderId();
-
 handler();
 if(mainorder+1==1){
   e.preventDefault();
   const tlt=0;
   const formData = new FormData();
   formData.append('tblId', tblId);
-  formData.append('date', date);
-  formData.append('time', hours);
+  formData.append('date', dt);
+  formData.append('time', tm);
   formData.append('totalPrice',tlt);
 
 
@@ -193,19 +237,7 @@ if(mainorder+1==1){
     
 };
 
-const handleRecordedChange = async (orderId) => {
-  try {
-    const response = await axios.post(updateCashier, [
-      { OrderId: orderId }
-    ]);
-    const status = response.data.status;
-    if (status === 'success selection') {
-      setOrderIdsatatus(response.data.recorded);
-    }
-  } catch (error) {
-    console.error('Error updating recorded status:', error);
-  }
-};
+
 
 
 
@@ -215,13 +247,14 @@ const handleRecordedChange = async (orderId) => {
 
 // insert the Order details 
   const handleInsert = () => {
+    handleStatus();
     orderexist();
-    handleRecordedChange(orderId);
+    fetchOrderId();
       setOrderLoading(true);
       const formData = new FormData();
       formData.append('tableid', tblId);
-      formData.append('time', hours);
-      formData.append('date', date);
+      formData.append('time', tm);
+      formData.append('date', dt);
       formData.append('total',totalPrice);
   
   
@@ -250,6 +283,8 @@ const handleRecordedChange = async (orderId) => {
         setNotes([]);
         handleOrderDetails();
         setOrderLoading(false);
+        setisOrder(true);
+        setisOrder(false);
         axios.post(updateTotaleprice, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -263,16 +298,22 @@ const handleRecordedChange = async (orderId) => {
     
    
   };
+useEffect(()=>{
 
+},[orderDetails])
   
 
 
 
   useEffect(() => {
-
+    fetchOrderId();
+    
 if(orderIdStatus == 'Recorded'){
   alert("Your Order has ended if you want a new order please scan again the QR code on your Table")
   navigate('/');
+}
+if(orderDetails.length>0){
+  handleOrderDetails(); 
 }
 
       axios
@@ -287,7 +328,7 @@ if(orderIdStatus == 'Recorded'){
       .catch((error) => {
         console.error("Error fetching elements:", error);
       });
-    }, [id,orderIdStatus]);
+    }, [id,orderIdStatus,orderId,status,orderDetails]);
     
   
   
@@ -304,7 +345,7 @@ if(orderIdStatus == 'Recorded'){
         }}
        
       >
-        <h3>Menu</h3>
+        <h3 style={{color:"black"}}>Menu</h3> 
       </div>
 
 
@@ -461,12 +502,26 @@ style={{border:"none",outline:"none", padding:"auto",fontSize:"15px",width:"100%
           Total Price
           </h1> 
           </td>
-      <td><h1>{totalOrderPrice}</h1>
+      <td><h1>{totalOrderPrice}$</h1>
       </td>
     </tr>
  
     </tbody>
     </table>
+    <div style={{height:"20px"}}></div>
+
+    {checkStatus && (
+
+    <div style={{display:"flex", justifyContent:"center"}}>
+      
+
+      <div style={{width:"180px" , height:"40px", background:changeColorStatus(status) ,borderRadius:"20px",textAlign:"center"}}>
+       <h2 style={{textAlign:"center"}}>{status}</h2> 
+        </div>
+      
+      
+    </div>
+    )}
     </div>
 
 

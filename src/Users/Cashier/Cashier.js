@@ -10,8 +10,8 @@ function Cashier() {
   const [error, setError] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const storedId=localStorage.getItem('id');
-  const [idP, setIdP] = useState(storedId || 44);
-  const[check,setCheck]=useState();
+  const [idP, setIdP] = useState(storedId || 0);
+  const[check,setCheck]=useState(false);
   const [orderIdd,setOrderId]=useState();
   const navigate = useNavigate();
 
@@ -95,6 +95,7 @@ function Cashier() {
     };
   }, [orders]);
   
+  
   const changecolor = (recorded) => {
     if (recorded === 'Recorded') {
       return 'green' ; 
@@ -163,9 +164,9 @@ const handleRecordedChange = async (orderId) => {
         <>
         <div className='ContainerCasher'>
           <div className='ContainerIconCasher'>
-            <h1>Casher</h1>  
-            <button className='ButtonLogOutCasher' onClick={logoutCasher}>Log Out</button>
-            <button onClick={handleNavigateHistory} >History</button>
+            <h1>Cashier</h1>  
+            <button onClick={logoutCasher}  >Log Out</button>
+            <button className='ButtonLogOutCasher' onClick={handleNavigateHistory}>History</button>
             
           </div>
           <div className='lineCasher'></div>
@@ -176,7 +177,7 @@ const handleRecordedChange = async (orderId) => {
         <div className='OrderContainerCasher'>
         
         <div className='OrderCasher1'>
-              <p> Order ID:  </p>
+             
             </div>
                   {isLoading ? (
             <p>Loading orders...</p>
@@ -185,7 +186,7 @@ const handleRecordedChange = async (orderId) => {
           ) : (
             orders
             .filter(order => order.recorded !== 'Recorded' )
-            .sort((a, b) => b.OrderId - a.OrderId)
+            .sort((a, b) => a.OrderId - b.OrderId)
             .map(order => (
               <div key={order.OrderId} className="OrderCasher">
                 <div className='OrderTableCasher'>

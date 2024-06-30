@@ -36,17 +36,17 @@ function Chef() {
   const [id, setId] = useState(null);
 
   useEffect(() => {
-    const chefId = localStorage.getItem('id');
-    // const chefId =41;
+    // const chefId = localStorage.getItem('id');
+    const chefId=41;
     if (chefId) {
       setId(chefId);
     } else {
-      navigate('/Login'); 
+      navigate('/LoginUsers'); 
     }
   }, [navigate]);
 
   const fetchOrders = async (chefId) => {
-    // setIsLoading(true);
+
     setError('');
     try {
       const response = await axios.get(`${chefOrder}${chefId}`);
@@ -67,14 +67,14 @@ function Chef() {
           note: order.note,
           status: order.status,
         });
+        console.log("tt")
         return acc;
       }, {});
       setOrders(Object.values(modifiedOrders));
     } catch (error) {
       console.error('Error fetching orders:', error);
-      setError('Failed to fetch orders. Please try again.');
+      setError('No orders yet.');
     } finally {
-      // setIsLoading(false);
     }
   };
 
@@ -135,7 +135,7 @@ function Chef() {
             <p className="error">{error}</p>
           ) : (
             orders
-            .sort((a, b) => b.orderId - a.orderId)
+            .sort((a, b) => a.orderId - b.orderId)
             .map((order, index) => (
               <div key={index} className="orderchef">
                 <div className='OrderCheff1'>
